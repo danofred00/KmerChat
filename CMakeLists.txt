@@ -15,8 +15,17 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED
     COMPONENTS Core Widgets WebSockets
 )
 
+set(SOURCES
+    message.cpp
+)
+
+set(HEADERS
+    message.h
+)
+
 add_executable(chatWebsocket
   main.cpp
+  ${SOURCES} ${HEADERS}
 )
 
 target_link_libraries(chatWebsocket
