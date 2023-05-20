@@ -17,10 +17,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED
 
 set(SOURCES
     message.cpp
+    services/chatservice.cpp
+    services/dbservice.cpp
 )
 
 set(HEADERS
     message.h
+    services/chatservice.h
+    services/dbservice.h
 )
 
 add_executable(chatWebsocket
