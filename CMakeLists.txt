@@ -34,3 +34,5 @@ target_link_libraries(chatWebsocket
     Qt${QT_VERSION_MAJOR}::WebSockets
 )
 
+add_subdirectory(tests)
+
