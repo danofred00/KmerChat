@@ -21,13 +21,13 @@ public:
 
     virtual QList<Message> messages() = 0;
 
-    virtual void addUser(User user) = 0;
+    virtual void addUser(const User & user) = 0;
 
-    virtual void addMessage(Message message) = 0;
+    virtual void addMessage(const Message & message) = 0;
 
-    virtual void updateUser(User user) = 0;
+    virtual void updateUser(const User & user) = 0;
 
-    virtual void updateMessage() = 0;
+    virtual void updateMessage(const Message & message) = 0;
 
 private:
 

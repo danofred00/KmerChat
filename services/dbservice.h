@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 #include "abstractdbservice.h"
 
@@ -34,13 +35,13 @@ public:
 
     QList<Message> messages() override;
 
-    void addUser(User user) override;
+    void addUser(const User & user) override;
 
-    void addMessage(Message message) override;
+    void addMessage(const Message & message) override;
 
-    void updateUser(User user) override;
+    void updateUser(const User & user) override;
 
-    void updateMessage() override;
+    void updateMessage(const Message & message) override;
 
     // getters
     const QString host() const { return mHost; }
@@ -85,6 +86,7 @@ private:
     QString mDbname;
 
     QSqlDatabase db;
+    QSqlQuery query;
 
 };
 
