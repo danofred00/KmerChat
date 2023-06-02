@@ -28,6 +28,7 @@ set(HEADERS
     services/chatservice.h
     services/dbservice.h
     services/abstractdbservice.h
+    services/abstractservice.h
 )
 
 add_executable(chatWebsocket

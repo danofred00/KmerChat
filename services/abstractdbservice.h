@@ -1,11 +1,12 @@
 #ifndef ABSTRACTDBSERVICE_H
 #define ABSTRACTDBSERVICE_H
 
+#include "abstractservice.h"
 #include "../message.h"
 #include "../user.h"
 #include <QList>
 
-class AbstractDbService
+class AbstractDbService : public AbstractService
 {
 
 public:

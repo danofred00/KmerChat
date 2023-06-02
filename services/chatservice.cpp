@@ -1,7 +1,8 @@
 #include "chatservice.h"
+#include "dbservice.h"
 
-ChatService::ChatService(QObject *parent)
-    : QObject{parent}
+ChatService::ChatService(DbService * db)
+    : db(db), AbstractService(nullptr)
 {
     _instance = this;
 }

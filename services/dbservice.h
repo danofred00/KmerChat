@@ -12,7 +12,7 @@
 #define DEFAULT_CONNECTION_NAME "KmerChat"
 #define DEFAULT_DB_NAME "kmerchat.db"
 
-class DbService : public QObject, public AbstractDbService
+class DbService : public AbstractDbService
 {
     Q_OBJECT
 public:
@@ -22,11 +22,16 @@ public:
 
     ~DbService();
 
-    static void init(const QString & host = QString("localhost"),
+    static void start(const QString & host = QString("localhost"),
                      const int port = 8080,
                      const QString & username = QString("admin"),
                      const QString & password = QString("password")
                     );
+
+    static void stop()
+    {
+        delete _instance;
+    }
 
     User user(quint64 id) override;
 
@@ -74,8 +79,7 @@ private:
     DbService(const QString & host,
               const int port,
               const QString & username,
-              const QString & password,
-              QObject *parent = nullptr);
+              const QString & password);
 
     void createTables();
 

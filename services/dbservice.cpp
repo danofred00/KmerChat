@@ -5,9 +5,9 @@
 DbService::DbService(const QString & host,
                      const int port,
                      const QString & username,
-                     const QString & password,
-                     QObject *parent)
-    : QObject(parent),
+                     const QString & password
+                    )
+    : AbstractDbService(),
     mHost(host),
     mPort(port),
     mUsername(username),
@@ -38,7 +38,7 @@ DbService::DbService(const QString & host,
 DbService * DbService::instance() {
     if(_instance == nullptr)
         // usage of uninstanciate object
-        throw std::runtime_error("Unable to get instance of DbService, please run init first.");
+        throw std::runtime_error("Unable to get instance of DbService, please run start first.");
 
     // if everything is okay
     return _instance;
@@ -62,7 +62,7 @@ DbService::~DbService()
     // delete _instance;
 }
 
-void DbService::init(const QString & host, const int port, const QString & username, const QString & password)
+void DbService::start(const QString & host, const int port, const QString & username, const QString & password)
 {
     // instanciate the service of it's not already done
     if(_instance == nullptr)
