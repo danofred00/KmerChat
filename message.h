@@ -14,10 +14,9 @@ public:
 
     enum MessageState { SEND, PENDING, NOTSEND, UNKNOWSTATE };
 
-    Message(Message && other);
+    Message(const Message & other);
 
-    Message(MessageType type = MessageType::TEXT, const QString & content = QString(""), MessageState state = MessageState::NOTSEND, QObject * parent = nullptr);
-
+    Message(MessageType type = TEXT, QString content = QString(""), MessageState state = MessageState::NOTSEND, QObject * parent = nullptr);
 
     // getters
     const QString content() const { return mContent; }
@@ -25,6 +24,8 @@ public:
     const quint64 from() const { return mUserFrom; }
 
     const quint64 to() const { return mUserTo; }
+
+    const quint64 id() const { return mId;}
 
     MessageType type() const { return mType; }
 
@@ -42,22 +43,34 @@ public:
 
     void setUserTo(const quint64 id) { mUserTo = id; }
 
+    void setId(const quint64 id) { mId = id; }
+
     // utils
 
     static Message fromJsonString(const QString & json);
 
     QString toString();
 
-private:
-
     static QString msgTypeToStr(MessageType type);
+
     static QString msgStateToStr(MessageState state);
+
     static MessageType strToMessageType(const QString & type);
+
     static MessageState strToMessageState(const QString & state);
+
+    Message operator=(const Message & message) {
+        Message msg{message};
+        return msg;
+    }
+
+
+private:
 
     QString mContent;
     quint64 mUserFrom;
     quint64 mUserTo;
+    quint64 mId;
     MessageState mState;
     MessageType mType;
 };

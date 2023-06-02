@@ -12,13 +12,15 @@
  * @param state
  * @param parent
  */
+
 Message::Message(MessageType type,
-                 const QString &content,
+                 QString content,
                  MessageState state,
                  QObject *parent) :
     mType(type), mContent(content), mState(state), QObject(parent)
 {
     setUserFrom(0);
+    setId(0);
     setUserTo(0);
 }
 
@@ -26,13 +28,14 @@ Message::Message(MessageType type,
  * @brief Message::Message the Copy constructor
  * @param other
  */
-Message::Message(Message &&other)
+Message::Message(const Message & other)
 {
     setContent(other.content());
     setState(other.state());
     setType(other.type());
     setUserFrom(other.from());
     setUserTo(other.to());
+    setId(other.id());
 }
 
 /**
@@ -49,6 +52,7 @@ QString Message::toString()
     obj.insert(QStringLiteral("from"), QJsonValue((qint64) from()));
     obj.insert(QStringLiteral("to"), QJsonValue((qint64) to()));
     obj.insert(QStringLiteral("content"), QJsonValue(content()));
+    obj.insert(QStringLiteral("id"), QJsonValue((qint64) id()));
 
     //
     json.setObject(obj);
@@ -76,6 +80,7 @@ Message Message::fromJsonString(const QString &json)
     msg.setState(Message::strToMessageState(jsonDoc["state"].toString()));
     msg.setUserFrom(jsonDoc["from"].toInteger());
     msg.setUserTo(jsonDoc["to"].toInteger());
+    msg.setId(jsonDoc["id"].toInteger());
     msg.setContent(jsonDoc["content"].toString());
     //
     return msg;
