@@ -125,6 +125,13 @@ public:
     void setName(const QString & name) { mName = name; }
 
     void setImage(const QString & image) { mImage = image; }
+
+    User operator=(const User & user)
+    {
+        User u{user};
+        return u;
+    }
+
 private:
 
     quint64 mId;
