@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlRecord>
 
 #include "abstractdbservice.h"
 
@@ -35,13 +36,17 @@ public:
 
     QList<Message> messages() override;
 
-    void addUser(const User & user) override;
+    void add(const User & user) override;
 
-    void addMessage(const Message & message) override;
+    void add(const Message & message) override;
 
-    void updateUser(const User & user) override;
+    void update(const User & user) override;
 
-    void updateMessage(const Message & message) override;
+    void update(const Message & message) override;
+
+    bool deleteUser(const quint64 id) override;
+
+    bool deleteMessage(const quint64 id) override;
 
     // getters
     const QString host() const { return mHost; }
@@ -75,6 +80,10 @@ private:
     void createTables();
 
     DbService(const DbService &other);
+
+    User recordToUser(const QSqlRecord & record);
+
+    Message recordToMessage(const QSqlRecord & record);
 
     static DbService * _instance;
 
