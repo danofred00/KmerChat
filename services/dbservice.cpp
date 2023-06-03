@@ -120,6 +120,22 @@ User DbService::user(quint64 id)
     throw std::runtime_error("Database is closed");
 }
 
+User DbService::user(const QString &username)
+{
+    if(db.isOpen()) {
+
+        query.prepare("SELECT * FROM users WHERE username=?;");
+        query.bindValue(0, username);
+        query.exec();
+
+        if(query.first())
+            return recordToUser(query.record());
+        else
+            throw std::runtime_error("Non exists user");
+    }
+    throw std::runtime_error("Database is closed");
+}
+
 Message DbService::message(quint64 id)
 {
     if(db.isOpen()) {

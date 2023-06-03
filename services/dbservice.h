@@ -35,6 +35,8 @@ public:
 
     User user(quint64 id) override;
 
+    User user(const QString &username) override;
+
     Message message(quint64 id) override;
 
     QList<User> users() override;
