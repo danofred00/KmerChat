@@ -4,7 +4,6 @@
 #include <QObject>
 #include "abstractservice.h"
 
-class DbService;
 
 /**
  * @brief The ChatService class
@@ -16,14 +15,11 @@ class ChatService : public AbstractService
 public:
 
     // usage of singleton pattern to enable one only instance of ChatService::class
-    static ChatService * instance() {
-        if(_instance == nullptr)
-            // usage of uninstanciate object
-            throw std::runtime_error("Unable to get instance of ChatService, please run start first.");
 
-        // if everything is okay
-        return _instance;
-    }
+
+    static ChatService * instance();
+
+    static void start();
 
     ~ChatService() {}
 
@@ -31,14 +27,23 @@ public:
         delete _instance;
     }
 
+
+public slots:
+
+    void sendMessage(QString * msg);
+
+    void readMessage();
+
 signals:
+
+    void messageReceive(QString * msg);
+
+    void messageSend(QString * msg);
 
 private:
 
-    ChatService(DbService * db);
-
+    ChatService(QObject * parent = nullptr);
     static ChatService * _instance;
-    DbService * db;
 
 };
 
