@@ -18,25 +18,29 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED
 set(SOURCES
     message.cpp
     user.cpp
+    usermodel.cpp
     services/chatservice.cpp
     services/dbservice.cpp
+    services/authservice.cpp
 )
 
 set(HEADERS
     message.h
     user.h
+    usermodel.h
     services/chatservice.h
     services/dbservice.h
     services/abstractdbservice.h
     services/abstractservice.h
+    services/authservice.h
 )
 
-add_executable(chatWebsocket
+add_executable(kmerchat
   main.cpp
   ${SOURCES} ${HEADERS}
 )
 
-target_link_libraries(chatWebsocket
+target_link_libraries(kmerchat
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::WebSockets
