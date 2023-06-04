@@ -18,9 +18,9 @@ public:
 
     QJsonDocument getJsonContent() const { return mJsonContent; }
 
-    QString toJsonString();
+    virtual QString toJsonString();
 
-    void parse(const QString & request);
+    virtual void parse(const QString & request);
 
     void setHeaders(const Headers &newHeaders) { mHeaders = newHeaders; }
 
