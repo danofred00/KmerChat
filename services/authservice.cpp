@@ -3,7 +3,7 @@
 
 
 AuthService::AuthService(UserModel * model)
-    : model{model}, AbstractService{nullptr}
+    : mUserModel{model}, AbstractService{nullptr}
 {
 }
 
@@ -28,7 +28,7 @@ AuthService * AuthService::_instance = nullptr;
 
 bool AuthService::login(const User * user)
 {
-    const User _user = model->user(user->username());
+    const User _user = mUserModel->user(user->username());
 
     if(_user.password() == user->password()) {
         emit userLogin(user->id());
@@ -39,19 +39,19 @@ bool AuthService::login(const User * user)
 
 void AuthService::signup(const User * user)
 {
-    if(model->exists(user->username()) == 0){
-        model->add(*user);
+    if(mUserModel->exists(user->username()) == 0){
+        mUserModel->add(*user);
 
         // get userId
-        auto id = model->user(user->username()).id();
+        auto id = mUserModel->user(user->username()).id();
         emit newUser(id);
     }
 }
 
 void AuthService::remove(const quint64 & id)
 {
-    if(model->exists(id) > 0)
-        model->remove(id);
+    if(mUserModel->exists(id) > 0)
+        mUserModel->remove(id);
 }
 
 void AuthService::logout(const quint64 & id)

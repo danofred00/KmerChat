@@ -29,6 +29,8 @@ public:
         delete _instance;
     }
 
+    UserModel * model() const { return mUserModel; }
+
 /*
 public slots:
 
@@ -59,7 +61,7 @@ private:
 
     void removeConnection(const quint64 & id);
 
-    UserModel * model;
+    UserModel * mUserModel;
 
 };
 
