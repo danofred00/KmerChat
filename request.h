@@ -2,16 +2,14 @@
 #define REQUEST_H
 
 #include <QObject>
-#include <QMap>
+#include "abstractnetworkmessage.h"
 
-using Headers = QMap<QString, int>;
-
-class Request : public QObject
+class Request : public AbstractNetworkMessage
 {
     Q_OBJECT
 public:
 
-    enum RequestType {
+    enum Type {
         Simple,
         Login,
         Logout,
@@ -20,25 +18,6 @@ public:
     };
 
     Request(QObject *parent = nullptr);
-
-    Headers headers() const { return mHeaders; }
-
-    QString content() const { return mContent; }
-
-    QString toJsonString();
-
-    void parse(const QString & request);
-
-    void setHeaders(const Headers &newHeaders) { mHeaders = newHeaders; }
-
-    void setContent(const QString &newContent) { mContent = newContent; }
-
-    void addHeader(const QString & h, const int & v);
-
-
-private:
-    Headers mHeaders;
-    QString mContent;
 };
 
 #endif // REQUEST_H
