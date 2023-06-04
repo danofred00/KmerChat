@@ -20,6 +20,8 @@ set(SOURCES
     user.cpp
     usermodel.cpp
     request.cpp
+    response.cpp
+    abstractnetworkmessage.cpp
     services/chatservice.cpp
     services/dbservice.cpp
     services/authservice.cpp
@@ -31,6 +33,8 @@ set(HEADERS
     user.h
     usermodel.h
     request.h
+    response.h
+    abstractnetworkmessage.h
     services/chatservice.h
     services/dbservice.h
     services/abstractdbservice.h
