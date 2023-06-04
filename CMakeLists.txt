@@ -23,6 +23,7 @@ set(SOURCES
     services/chatservice.cpp
     services/dbservice.cpp
     services/authservice.cpp
+    services/appservice.cpp
 )
 
 set(HEADERS
@@ -35,6 +36,7 @@ set(HEADERS
     services/abstractdbservice.h
     services/abstractservice.h
     services/authservice.h
+    services/appservice.h
 )
 
 add_executable(kmerchat
