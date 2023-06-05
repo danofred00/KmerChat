@@ -1,6 +1,7 @@
 
 #include "chatservice.h"
 
+using namespace Server;
 
 ChatService::ChatService(QObject * parent)
     : AbstractService{parent}

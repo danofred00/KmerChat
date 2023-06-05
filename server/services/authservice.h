@@ -1,12 +1,17 @@
 #ifndef AUTHSERVICE_H
 #define AUTHSERVICE_H
 
-#include "core/services/abstractservice.h"
 #include "core/user.h"
 #include "core/models/usermodel.h"
+#include "core/services/abstractservice.h"
 
 #include <QList>
 
+namespace Server {
+
+using namespace Core;
+using namespace Core::Model;
+using namespace Core::Service;
 
 class AuthService : public AbstractService
 {
@@ -62,5 +67,7 @@ private:
     UserModel * mUserModel;
 
 };
+
+} // namespace Server
 
 #endif // AUTHSERVICE_H

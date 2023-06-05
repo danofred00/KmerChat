@@ -1,5 +1,6 @@
 #include "usermodel.h"
-#include "../user.h"
+
+using namespace Core::Model;
 
 UserModel::UserModel(QList<User> users, QObject *parent)
     : mUsers{users}, QObject{parent}

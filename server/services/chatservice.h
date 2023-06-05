@@ -4,6 +4,10 @@
 #include <QObject>
 #include "core/services/abstractservice.h"
 
+namespace Server {
+
+using namespace Core;
+using namespace Core::Service;
 
 /**
  * @brief The ChatService class
@@ -46,5 +50,7 @@ private:
     static ChatService * _instance;
 
 };
+
+} // namespace Server
 
 #endif // CHATSERVICE_H

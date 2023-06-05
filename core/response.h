@@ -3,6 +3,8 @@
 
 #include "request.h"
 
+namespace Core {
+
 class Response : public AbstractNetworkMessage
 {
 public:
@@ -13,5 +15,7 @@ public:
 
     Response(QObject *parent = nullptr);
 };
+
+} // namespace Core
 
 #endif // RESPONSE_H

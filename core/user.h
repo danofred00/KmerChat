@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+namespace Core {
+
 class User : public QObject
 {
     Q_OBJECT
@@ -143,5 +145,7 @@ private:
     QString mImage;
 
 };
+
+}   // namespace Core
 
 #endif // USER_H

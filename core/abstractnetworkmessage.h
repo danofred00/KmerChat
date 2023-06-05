@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QJsonDocument>
 
+namespace Core {
+
 using Headers = QMap<QString, int>;
 
 class AbstractNetworkMessage : public QObject
@@ -49,5 +51,7 @@ private:
     QString mContent;
     QJsonDocument mJsonContent;
 };
+
+} // namespace Core
 
 #endif // ABSTRACTNETWORKMESSAGE_H

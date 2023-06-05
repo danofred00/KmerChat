@@ -2,8 +2,9 @@
 #include "appservice.h"
 #include "core/request.h"
 #include "core/response.h"
-
 #include <exception>
+
+using namespace Server;
 
 AppService::AppService(QString host, int port, QObject *parent)
     : mHost{host}, mPort{port},

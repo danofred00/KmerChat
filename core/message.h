@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+namespace Core {
+
 class Message : public QObject
 {
     Q_OBJECT
@@ -74,5 +76,7 @@ private:
     MessageState mState;
     MessageType mType;
 };
+
+} // namespace Core
 
 #endif // MESSAGE_H

@@ -5,6 +5,8 @@
 #include <exception>
 #include "message.h"
 
+using namespace Core;
+
 /**
  * @brief Message::Message
  * @param type

@@ -2,9 +2,15 @@
 #define ABSTRACTDBSERVICE_H
 
 #include "abstractservice.h"
-#include "../message.h"
+
 #include "../user.h"
+#include "../message.h"
+
 #include <QList>
+
+namespace Core::Service {
+
+using namespace Core;
 
 class AbstractDbService : public AbstractService
 {
@@ -41,5 +47,7 @@ public:
 private:
 
 };
+
+} // namespace Core::Service
 
 #endif // ABSTRACTDBSERVICE_H

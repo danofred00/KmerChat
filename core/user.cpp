@@ -5,6 +5,9 @@
 #include <QJsonValue>
 
 #include <exception>
+
+using namespace Core;
+
 User::User(QObject *parent)
     : QObject{parent}
 {

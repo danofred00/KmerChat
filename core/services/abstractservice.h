@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+namespace Core::Service {
+
 /**
  * @brief The AbstractService class
  * A service can be started, and stoped
@@ -29,5 +31,7 @@ public:
         // this method should be overloaded
     }
 };
+
+} // namespace Core::Service
 
 #endif // ABSTRACTSERVICE_H

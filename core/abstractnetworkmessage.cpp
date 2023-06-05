@@ -5,6 +5,8 @@
 #include <QJsonParseError>
 #include <QJsonValue>
 
+using namespace Core;
+
 AbstractNetworkMessage::AbstractNetworkMessage(QObject * parent)
     : QObject(parent)
 {

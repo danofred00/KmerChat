@@ -1,6 +1,7 @@
 
 #include "authservice.h"
 
+using namespace Server;
 
 AuthService::AuthService(UserModel * model)
     : mUserModel{model}, AbstractService{nullptr}

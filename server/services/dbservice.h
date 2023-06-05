@@ -6,11 +6,18 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 
+#include "core/message.h"
+#include "core/user.h"
 #include "core/services/abstractdbservice.h"
 
 #define DEFAULT_DB_TYPE "QSQLITE"
 #define DEFAULT_CONNECTION_NAME "KmerChat"
 #define DEFAULT_DB_NAME "kmerchat.db"
+
+namespace Server {
+
+using namespace Core;
+using namespace Core::Service;
 
 class DbService : public AbstractDbService
 {
@@ -106,5 +113,7 @@ private:
     QSqlQuery query;
 
 };
+
+} // namespace Server
 
 #endif // DBSERVICE_H

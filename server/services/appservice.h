@@ -5,12 +5,21 @@
 #include <QWebSocket>
 #include <QWebSocketServer>
 
+#include "core/user.h"
+#include "core/models/usermodel.h"
 #include "core/services/abstractservice.h"
+
 #include "authservice.h"
-#include "chatservice.h"
 #include "dbservice.h"
+#include "chatservice.h"
 
 #define DEFAULT_SERVERNAME "KmerchatServer"
+
+namespace Server {
+
+using namespace Core;
+using namespace Core::Model;
+using namespace Core::Service;
 
 using Connection = QMap<QWebSocket *, quint64>;
 
@@ -77,5 +86,7 @@ private:
     QString mHost;
     int mPort;
 };
+
+} // namespace Server
 
 #endif // APPSERVICE_H

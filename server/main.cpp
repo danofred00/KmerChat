@@ -12,6 +12,11 @@
 
 #include <QDebug>
 
+using namespace Core;
+using namespace Core::Service;
+using namespace Core::Model;
+using namespace Server;
+
 int main(int argc, char *argv[])
 {
     // main code

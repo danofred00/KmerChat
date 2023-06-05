@@ -1,6 +1,9 @@
+
 #include "dbservice.h"
 
 #include <QSqlError>
+
+using namespace Server;
 
 DbService::DbService(const QString & host,
                      const int port,

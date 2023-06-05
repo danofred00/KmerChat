@@ -3,8 +3,11 @@
 
 #include <QObject>
 
+#include "../user.h"
 
-class User;
+namespace Core::Model {
+
+using namespace Core;
 
 class UserModel : public QObject
 {
@@ -45,5 +48,7 @@ signals:
 private:
     QList<User> mUsers;
 };
+
+} // namespace Core::Model
 
 #endif // USERMODEL_H
