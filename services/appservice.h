@@ -43,14 +43,24 @@ private slots:
 
     void onBinaryMessageReceived(const QByteArray & message);
 
+    void onUserAdded(const User * user);
+    void onUserRemoved(const User * user);
+    void onUserLogout(quint64 id);
+    void onUserLogin(quint64 id);
+
 private:
     AppService(QString host, int port, QObject *parent = nullptr);
     static AppService * _instance;
 
     // private methods
     void init();
-    void removeConnection(const quint64 & id);
+    void removeConnection(QWebSocket * s);
     void addConnection(QWebSocket * s, quint64 id = 0);
+
+    void login(User * user, QWebSocket * socket);
+    void registerUser(User * user, QWebSocket * socket);
+    void logout(User * user, QWebSocket * socket);
+    void unregisterUser(User * user, QWebSocket * socket);
     //void authClient(QWebSocket * socket);
 
 
@@ -58,6 +68,8 @@ private:
     AuthService * auth;
     DbService * db;
     ChatService * chat;
+
+    UserModel * userModel;
 
     // properties
     QWebSocketServer mWebsocketserver;
