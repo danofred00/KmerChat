@@ -4,7 +4,7 @@
 #include <QObject>
 #include "core/services/abstractservice.h"
 
-namespace Server {
+namespace Server::Service  {
 
 using namespace Core;
 using namespace Core::Service;

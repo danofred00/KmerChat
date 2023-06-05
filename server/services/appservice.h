@@ -15,7 +15,7 @@
 
 #define DEFAULT_SERVERNAME "KmerchatServer"
 
-namespace Server {
+namespace Server::Service  {
 
 using namespace Core;
 using namespace Core::Model;

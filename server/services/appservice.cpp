@@ -4,7 +4,7 @@
 #include "core/response.h"
 #include <exception>
 
-using namespace Server;
+using namespace Server::Service ;
 
 AppService::AppService(QString host, int port, QObject *parent)
     : mHost{host}, mPort{port},
