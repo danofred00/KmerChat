@@ -17,10 +17,12 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED
 
 # some default config
 set(CORE_NAME Core)
-
 set(SERVER_NAME Server)
-
+set(CLIENT_NAME Client)
+#
 add_subdirectory(core)
+
+add_subdirectory(client)
 
 add_subdirectory(server)
 
