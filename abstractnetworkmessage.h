@@ -10,13 +10,22 @@ class AbstractNetworkMessage : public QObject
 {
     Q_OBJECT
 public:
+
+    enum Type {
+        Simple,
+        Login,
+        Logout,
+        Register,
+        UnRegister,
+    };
+
     AbstractNetworkMessage(QObject * parent = nullptr);
+
+    virtual ~AbstractNetworkMessage();
 
     Headers headers() const { return mHeaders; }
 
     QString content() const { return mContent; }
-
-    QJsonDocument getJsonContent() const { return mJsonContent; }
 
     virtual QString toJsonString();
 
@@ -28,12 +37,12 @@ public:
     // to update the value of the JsonContent when the content changed, call this method in setContent
     //setJsonContent(QJsonDocument::fromJson(newContent.toLatin1()));
 
-    void setJsonContent(const QJsonDocument &newContent) { mJsonContent = newContent; }
-
     void addHeader(const QString & h, const int & v);
 
+protected:
+    QJsonDocument getJsonContent() const { return mJsonContent; }
+    void setJsonContent(const QJsonDocument &newContent) { mJsonContent = newContent; }
     void updateJsonContent();
-
 
 private:
     Headers mHeaders;

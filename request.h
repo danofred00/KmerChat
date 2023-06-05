@@ -9,14 +9,6 @@ class Request : public AbstractNetworkMessage
     Q_OBJECT
 public:
 
-    enum Type {
-        Simple,
-        Login,
-        Logout,
-        Register,
-        Unknow
-    };
-
     Request(QObject *parent = nullptr);
 };
 

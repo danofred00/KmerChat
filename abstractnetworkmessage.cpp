@@ -11,6 +11,11 @@ AbstractNetworkMessage::AbstractNetworkMessage(QObject * parent)
 
 }
 
+AbstractNetworkMessage::~AbstractNetworkMessage()
+{
+
+}
+
 void AbstractNetworkMessage::updateJsonContent()
 {
     setJsonContent(QJsonDocument::fromJson(mContent.toLatin1()));
@@ -28,6 +33,7 @@ QString AbstractNetworkMessage::toJsonString()
         headers.insert(k, QJsonValue(mHeaders[k]));
 
     // make jsonContent
+    updateJsonContent();
     jsonContent = mJsonContent.object();
 
     //qDebug() <<
@@ -62,8 +68,6 @@ void AbstractNetworkMessage::parse(const QString & s)
 
         // get the content
         docContent.setObject(doc["content"].toObject());
-
-        qDebug() << docContent;
 
         // update the header property
         setHeaders(hdrs);

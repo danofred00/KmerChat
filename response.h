@@ -7,10 +7,8 @@ class Response : public AbstractNetworkMessage
 {
 public:
 
-    enum Type {
-        LoginOk,
-        LoginFailed,
-        RegisterOk
+    enum Code {
+        SUCCESS = 200, FAILED = 400
     };
 
     Response(QObject *parent = nullptr);
