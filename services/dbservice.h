@@ -53,6 +53,8 @@ public:
 
     bool deleteUser(const quint64 id) override;
 
+    bool deleteUser(const QString & username) override;
+
     bool deleteMessage(const quint64 id) override;
 
     // getters

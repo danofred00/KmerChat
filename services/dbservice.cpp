@@ -191,6 +191,17 @@ bool DbService::deleteUser(const quint64 id)
     throw std::runtime_error("Database is closed");
 }
 
+bool DbService::deleteUser(const QString & username)
+{
+    if(db.isOpen()) {
+
+        query.prepare("DELETE FROM users WHERE username=?;");
+        query.bindValue(0, username);
+        return query.exec();
+    }
+    throw std::runtime_error("Database is closed");
+}
+
 bool DbService::deleteMessage(const quint64 id)
 {
     if(db.isOpen()) {

@@ -34,6 +34,8 @@ public:
 
     virtual bool deleteUser(const quint64 id) = 0;
 
+    virtual bool deleteUser(const QString & username) = 0;
+
     virtual bool deleteMessage(const quint64 id) = 0;
 
 private:
