@@ -7,6 +7,13 @@
 #include "../message.h"
 
 #include <QList>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlRecord>
+
+#define DEFAULT_DB_TYPE "QSQLITE"
+#define DEFAULT_CONNECTION_NAME "KmerChat"
+#define DEFAULT_DB_NAME "kmerchat.db"
 
 namespace Core::Service {
 
@@ -17,34 +24,82 @@ class AbstractDbService : public AbstractService
     Q_OBJECT
 public:
 
-    virtual ~AbstractDbService()
-    { }
+    AbstractDbService(
+        const QString & host,
+        const int port,
+        const QString & username,
+        const QString & password,
+        QObject * parent = nullptr);
 
-    virtual User user(quint64 id) = 0;
+    AbstractDbService(const AbstractDbService &other);
 
-    virtual User user(const QString &username) = 0;
+    virtual ~AbstractDbService();
 
-    virtual Message message(quint64 id) = 0;
+    virtual User user(quint64 id);
 
-    virtual QList<User> users() = 0;
+    virtual User user(const QString &username);
 
-    virtual QList<Message> messages() = 0;
+    virtual Message message(quint64 id);
 
-    virtual void add(const User & user) = 0;
+    virtual QList<User> users();
 
-    virtual void add(const Message & message) = 0;
+    virtual QList<Message> messages();
 
-    virtual void update(const User & user) = 0;
+    virtual void add(const User & user);
 
-    virtual void update(const Message & message) = 0;
+    virtual void add(const Message & message);
 
-    virtual bool deleteUser(const quint64 id) = 0;
+    virtual void update(const User & user);
 
-    virtual bool deleteUser(const QString & username) = 0;
+    virtual void update(const Message & message);
 
-    virtual bool deleteMessage(const quint64 id) = 0;
+    virtual bool deleteUser(const quint64 id);
+
+    virtual bool deleteUser(const QString & username);
+
+    virtual bool deleteMessage(const quint64 id);
+
+    // getters
+    const QString host() const { return mHost; }
+
+    const QString dbname() const { return mDbname; }
+
+    const int port() const { return mPort; }
+
+    const QString username() const { return mUsername; }
+
+    const QString password() const { return mPassword; }
+
+    // setters
+    void setHost(const QString & host) { mHost = host; }
+
+    void setPort(const int & port) { mPort = port; }
+
+    void setUsername(const QString &username) { mUsername = username; }
+
+    void setPassword(const QString & password) { mPassword = password; }
+
+    void setDbname(const QString &name) { mDbname = name; }
+
+
+protected:
+
+    void createTables();
+
+    User recordToUser(const QSqlRecord & record);
+
+    Message recordToMessage(const QSqlRecord & record);
 
 private:
+    // properties
+    QString mHost;
+    int mPort;
+    QString mUsername;
+    QString mPassword;
+    QString mDbname;
+
+    QSqlDatabase db;
+    QSqlQuery query;
 
 };
 

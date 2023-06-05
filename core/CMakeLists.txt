@@ -6,6 +6,7 @@ set(SOURCES
     request.cpp
     response.cpp
     abstractnetworkmessage.cpp
+    services/abstractdbservice.cpp
     models/usermodel.cpp
 )
 
@@ -27,4 +28,5 @@ target_include_directories(${CORE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(Core PUBLIC
     Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Sql
 )
