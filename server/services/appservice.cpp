@@ -11,6 +11,9 @@ AppService::AppService(QString host, int port, QObject *parent)
       mWebsocketserver{DEFAULT_SERVERNAME, QWebSocketServer::NonSecureMode},
       AbstractService{parent}
 {
+    // debug
+    qDebug() << "Starting AppService ...";
+
     // get instances of all avaliables services
     auth = AuthService::instance();
     chat = ChatService::instance();

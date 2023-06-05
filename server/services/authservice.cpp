@@ -1,11 +1,14 @@
 
 #include "authservice.h"
+#include <QDebug>
 
 using namespace Server::Service ;
 
 AuthService::AuthService(UserModel * model)
     : mUserModel{model}, AbstractService{nullptr}
 {
+    // debug
+    qDebug() << "Starting AuthService ...";
 }
 
 void AuthService::start(UserModel *model)

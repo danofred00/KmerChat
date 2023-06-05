@@ -8,13 +8,17 @@
 #include "services/authservice.h"
 #include "services/appservice.h"
 
+#include <QDebug>
+
 using namespace Core;
 using namespace Server;
 using namespace Server::Service;
 
 AppServer::AppServer(QString host, int port, QObject *parent)
     : host(host), port(port), QObject{parent}
-{ }
+{
+    qDebug() << "Starting the server at : " << host << " : " << port;
+}
 
 AppServer::~AppServer()
 {

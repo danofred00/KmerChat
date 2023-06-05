@@ -1,11 +1,16 @@
 
 #include "chatservice.h"
 
+#include <QDebug>
+
 using namespace Server::Service ;
 
 ChatService::ChatService(QObject * parent)
     : AbstractService{parent}
-{ }
+{
+    // debug
+    qDebug() << "Starting ChatService ...";
+}
 
 // the unique instance of this object
 ChatService * ChatService::_instance = nullptr;

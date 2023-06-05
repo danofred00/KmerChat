@@ -2,6 +2,7 @@
 #include "abstractdbservice.h"
 
 #include <QSqlError>
+#include <QDebug>
 
 using namespace Core::Service;
 
@@ -17,6 +18,9 @@ AbstractDbService::AbstractDbService(
         mPassword(password),
         AbstractService(parent)
 {
+    // debug
+    qDebug() << "Starting Database Service ...";
+
     // init the database
     db = QSqlDatabase::addDatabase(DEFAULT_DB_TYPE, DEFAULT_CONNECTION_NAME);
 
