@@ -5,7 +5,7 @@
 #include <QWebSocket>
 #include <QWebSocketServer>
 
-#include "abstractservice.h"
+#include "core/services/abstractservice.h"
 #include "authservice.h"
 #include "chatservice.h"
 #include "dbservice.h"

@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.14)
 
 project(KmrChat LANGUAGES CXX)
 
-set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -15,45 +15,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED
     COMPONENTS Core Widgets WebSockets Sql
 )
 
-set(SOURCES
-    message.cpp
-    user.cpp
-    usermodel.cpp
-    request.cpp
-    response.cpp
-    abstractnetworkmessage.cpp
-    services/chatservice.cpp
-    services/dbservice.cpp
-    services/authservice.cpp
-    services/appservice.cpp
-)
+# some default config
+set(CORE_NAME Core)
 
-set(HEADERS
-    message.h
-    user.h
-    usermodel.h
-    request.h
-    response.h
-    abstractnetworkmessage.h
-    services/chatservice.h
-    services/dbservice.h
-    services/abstractdbservice.h
-    services/abstractservice.h
-    services/authservice.h
-    services/appservice.h
-)
+set(SERVER_NAME Server)
 
-add_executable(kmerchat
-  main.cpp
-  ${SOURCES} ${HEADERS}
-)
+add_subdirectory(core)
 
-target_link_libraries(kmerchat
-    Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::Widgets
-    Qt${QT_VERSION_MAJOR}::WebSockets
-    Qt${QT_VERSION_MAJOR}::Sql
-)
+add_subdirectory(server)
 
 add_subdirectory(tests)
 

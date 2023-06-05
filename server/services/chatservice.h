@@ -2,7 +2,7 @@
 #define CHATSERVICE_H
 
 #include <QObject>
-#include "abstractservice.h"
+#include "core/services/abstractservice.h"
 
 
 /**

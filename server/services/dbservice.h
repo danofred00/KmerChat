@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 
-#include "abstractdbservice.h"
+#include "core/services/abstractdbservice.h"
 
 #define DEFAULT_DB_TYPE "QSQLITE"
 #define DEFAULT_CONNECTION_NAME "KmerChat"

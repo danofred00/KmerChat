@@ -1,9 +1,9 @@
 #ifndef AUTHSERVICE_H
 #define AUTHSERVICE_H
 
-#include "abstractservice.h"
-#include "../user.h"
-#include "../usermodel.h"
+#include "core/services/abstractservice.h"
+#include "core/user.h"
+#include "core/models/usermodel.h"
 
 #include <QList>
 
