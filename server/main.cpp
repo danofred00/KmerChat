@@ -1,48 +1,41 @@
 
 #include <QCoreApplication>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
-#include "services/chatservice.h"
-#include "services/dbservice.h"
-#include "services/authservice.h"
-#include "services/appservice.h"
-#include "core/user.h"
-#include "core/request.h"
-#include "core/models/usermodel.h"
-#include "core/message.h"
+#include "appserver.h"
 
-#include <QDebug>
+QString description() {
+    return "The Server of KmerChatApp Client.";
+}
 
-using namespace Core;
-using namespace Core::Service;
-using namespace Core::Model;
-using namespace Server;
 
 int main(int argc, char *argv[])
 {
     // main code
     QCoreApplication a{argc, argv};
+    QCoreApplication::setApplicationName("KmerChat-Server");
+    QCoreApplication::setApplicationVersion("0.0.1");
 
-    DbService::start();
-    auto db = DbService::instance();
+    QCommandLineParser parser;
+    parser.setApplicationDescription(description());
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("host", QCoreApplication::tr("The host address"));
+    parser.addPositionalArgument("port", QCoreApplication::tr("The port of the server"));
+    parser.process(QCoreApplication::arguments());
 
-    UserModel model {db->users()};
+    auto args = parser.positionalArguments();
 
-    AuthService::start(&model);
+    if(args.size() == 2){
 
-    ChatService::start();
+        Server::AppServer server = Server::AppServer(args.at(0), args.at(1).toInt());
 
-    AppService::start("localhost", 1234);
+        server.start();
 
-    //auto user = DbService::instance()->user("Danofred");
-
-    Request req;
-
-    req.parse("{\"headers\":{\"type\":1}, \"content\":{\"Hello\": \"client\"}}");
-
-    //req.addHeader("type", Request::Login);
-    //req.setContent("{\"Hello\": \"client\"}");
-
-    qDebug() << req.toJsonString() << " - content : " << req.content();
+    } else {
+        parser.showHelp();
+    }
 
     return a.exec();
 }

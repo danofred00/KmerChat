@@ -1,6 +1,7 @@
 
 # set sources files for the server
 set(SOURCES
+    appserver.cpp
     services/chatservice.cpp
     services/dbservice.cpp
     services/authservice.cpp
@@ -9,6 +10,7 @@ set(SOURCES
 
 # set headers files for the server
 set(HEADERS
+    appserver.h
     services/chatservice.h
     services/dbservice.h
     services/authservice.h
@@ -25,5 +27,4 @@ target_include_directories(${SERVER_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 
 target_link_libraries(${SERVER_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::WebSockets
-    Qt${QT_VERSION_MAJOR}::Sql
 )
