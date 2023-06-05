@@ -37,21 +37,31 @@ bool AuthService::login(const User * user)
     return false;
 }
 
-void AuthService::signup(const User * user)
+bool AuthService::signup(const User * user)
 {
     if(mUserModel->exists(user->username()) == 0){
         mUserModel->add(*user);
 
         // get userId
-        auto id = mUserModel->user(user->username()).id();
-        emit newUser(id);
+        auto id = mUserModel->users().size() - 1;
+        emit newUser(user);
+        return true;
     }
+
+    return false;
 }
 
-void AuthService::remove(const quint64 & id)
+bool AuthService::remove(const User * user)
 {
-    if(mUserModel->exists(id) > 0)
-        mUserModel->remove(id);
+    auto username = user->username();
+    // we remove the user only if is valid id and credentials
+    if(mUserModel->exists(username) > 0 && user->password() == mUserModel->user(username).password()) {
+        mUserModel->remove(username);
+        emit removedAccount(user);
+        return true;
+    }
+
+    return false;
 }
 
 void AuthService::logout(const quint64 & id)

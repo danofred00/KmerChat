@@ -18,9 +18,9 @@ public:
 
     bool login(const User * user);
 
-    void signup(const User * user);
+    bool signup(const User * user);
 
-    void remove(const quint64 & id);
+    bool remove(const User * user);
 
     void logout(const quint64 & id);
 
@@ -50,16 +50,14 @@ signals:
 
     void userLogout(const quint64 & id);
 
-    void newUser(const quint64 & id);
+    void newUser(const User * user);
 
-    void removedAccount(const User user);
+    void removedAccount(const User * user);
 
 private:
 
     AuthService(UserModel * model);
     static AuthService * _instance;
-
-    void removeConnection(const quint64 & id);
 
     UserModel * mUserModel;
 
