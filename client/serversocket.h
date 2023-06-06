@@ -16,7 +16,7 @@ class ServerSocket : public QWebSocket
 public:
     ServerSocket(QObject *parent = nullptr);
 
-    // Core::Response * lastResponse();
+    Core::Response * lastResponse();
 
 signals:
 

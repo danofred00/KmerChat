@@ -16,6 +16,11 @@ ServerSocket::ServerSocket(QObject *parent)
     });
 }
 
+Core::Response * ServerSocket::lastResponse()
+{
+    return &response;
+}
+
 void ServerSocket::onError(QAbstractSocket::SocketError error)
 {
     qDebug() << error;
