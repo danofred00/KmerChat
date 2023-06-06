@@ -10,20 +10,35 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql WebSockets)
 
 # set sources files for the server
 set(SOURCES
+    appclient.cpp
     serversocket.cpp
     services/authservice.cpp
+    ui/login.cpp
+    ui/signup.cpp
+    ui/dialog.cpp
 )
 
 # set headers files for the server
 set(HEADERS
+    validator.h
+    appclient.h
     serversocket.h
     services/authservice.h
+    ui/login.h
+    ui/signup.h
+    ui/dialog.h
+)
+
+set(UIFILES
+    ui/login.ui
+    ui/signup.ui
+    ui/dialog.ui
 )
 
 add_executable(${CLIENT_NAME}
     main.cpp
     ui/resources.qrc
-    ${SOURCES} ${HEADERS})
+    ${SOURCES} ${HEADERS} ${UIFILES})
 
 set_target_properties(${CLIENT_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER cm.danofred.kmerchat
