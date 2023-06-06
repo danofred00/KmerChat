@@ -30,28 +30,21 @@ void AppClient::start(QString host, int port)
         auth->setServerSocket(&serverSocket);
 
         // connect ui signals
+        // loginDlg signals
         QObject::connect(&loginDlg, &Login::readyLogin, this, [&](QString username, QString password) {
-
             User user = User::Builder().hasUsername(username).hasPassword(password).build();
             auth->login(&user);
-
         });
-
         QObject::connect(&loginDlg, SIGNAL(hasNoAccount()), this, SLOT(onHasNoAccount()));
-
-        QObject::connect(&signupDlg, &Signup::ready, [&](QMap<QString, QVariant> user) {
-
+        // signinDlg signals
+        QObject::connect(&signupDlg, &Signup::ready, this, [&](QMap<QString, QVariant> user) {
             User _user = User(user);
             auth->signup(&_user);
-
         });
-
         QObject::connect(&signupDlg, SIGNAL(alreadyHasAccount()), this, SLOT(onAlreadyHasAccount()));
-
 
         // start uis
         loginDlg.show();
-        signupDlg.show();
     });
 }
 
