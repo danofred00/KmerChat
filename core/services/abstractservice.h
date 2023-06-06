@@ -2,6 +2,9 @@
 #define ABSTRACTSERVICE_H
 
 #include <QObject>
+#include <QDebug>
+
+#define DEFAULT_SERVICE_NAME "AbstractService"
 
 namespace Core::Service {
 
@@ -12,10 +15,12 @@ namespace Core::Service {
 class AbstractService : public QObject
 {
     Q_OBJECT
-public:
+protected:
 
     AbstractService(QObject * parent = nullptr) : QObject(parent)
     { }
+
+public:
 
     virtual ~AbstractService() {
         // virtual destructor
@@ -29,6 +34,10 @@ public:
     static void stop() {
         // method to stop the service
         // this method should be overloaded
+    }
+
+    static QString serviceName() {
+        return QString(DEFAULT_SERVICE_NAME);
     }
 };
 
