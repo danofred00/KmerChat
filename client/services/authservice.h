@@ -41,7 +41,7 @@ signals:
 
     void logoutResult(int result);
 
-    void signintResult(int result);
+    void signinResult(int result);
 
     void signoutResult(int result);
 

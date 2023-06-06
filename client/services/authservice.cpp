@@ -7,7 +7,8 @@ using namespace Client::Service;
 AuthService::AuthService(Client::ServerSocket * ss, QObject *parent)
     : Core::Service::AbstractService{parent}
 {
-    setServerSocket(ss);
+    if(ss != nullptr)
+        setServerSocket(ss);
 }
 
 AuthService * AuthService::_instance = nullptr;
@@ -80,6 +81,27 @@ void AuthService::signout(Core::User * user)
 
 void AuthService::authResponseReceived(Core::Response * response)
 {
-    qDebug() << "AuthResponse Received";
-    qDebug() << response->toJsonString();
+    qDebug() << "AuthResponse Received : AuthService::class" ;
+
+    auto type = response->headers().value("type");
+    auto code = response->headers().value("code");
+
+    switch (type) {
+    case Core::Response::Login:
+        emit loginResult(code);
+        break;
+    case Core::Response::Logout:
+        emit logoutResult(code);
+        break;
+    case Core::Response::Register:
+        emit signinResult(code);
+        break;
+    case Core::Response::UnRegister:
+        emit signoutResult(code);
+        break;
+    default:
+        break;
+    }
+
 }
+
