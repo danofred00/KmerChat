@@ -14,6 +14,19 @@ User::User(QObject *parent)
 
 }
 
+User::User(QMap<QString, QVariant> user, QObject * parent)
+    : QObject(parent)
+{
+
+    mId = user.value("id").toInt();
+    mName = user.value("name").toString();
+    mUsername = user.value("username").toString();
+    mEmail = user.value("email").toString();
+    mTel = user.value("tel").toString();
+    mPassword = user.value("password").toString();
+    mImage = user.value("image").toString();
+}
+
 User::User(const User & other)
 {
     setName(other.name());

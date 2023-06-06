@@ -12,6 +12,8 @@ public:
 
     User(QObject *parent = nullptr);
 
+    User(QMap<QString, QVariant> user, QObject * parent = nullptr);
+
     User(const User & other);
 
     // Builder class fot the current user
