@@ -6,8 +6,8 @@
 
 using namespace Server::Service ;
 
-AppService::AppService(QString host, int port, QObject *parent)
-    : mHost{host}, mPort{port},
+AppService::AppService(int port, QObject *parent)
+    : mPort{port},
       mWebsocketserver{DEFAULT_SERVERNAME, QWebSocketServer::NonSecureMode},
       AbstractService{parent}
 {
@@ -43,20 +43,24 @@ AppService * AppService::instance()
     return _instance;
 }
 
-void AppService::start(QString host, int port)
+void AppService::start(int port)
 {
     if(_instance == nullptr) {
-        _instance = new AppService(host, port);
+        _instance = new AppService(port);
     }
 }
 
 void AppService::init()
 {
     // run the server
-    if(mWebsocketserver.listen(QHostAddress(mHost), mPort))
+    if(mWebsocketserver.listen(QHostAddress(QHostAddress::AnyIPv4), mPort))
     {
         // connect signals
         QObject::connect(&mWebsocketserver, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+    }
+    else {
+        qDebug() << "Unable to run the server ... Closing connection";
+        stop();
     }
 }
 
@@ -102,7 +106,7 @@ void AppService::removeConnection(QWebSocket * s)
 void AppService::onNewConnection()
 {
     QWebSocket * socket = mWebsocketserver.nextPendingConnection();
-
+    qDebug() << "New Client Connected ... Waiting for authentification (Addr : " << socket << " )";
     QObject::connect(socket, SIGNAL(textMessageReceived(QString)), this, SLOT(onMessageReceived(QString)));
     QObject::connect(socket, SIGNAL(binaryMessageReceived(QByteArray)), this, SLOT(onBinaryMessageReceived(QByteArray)));
 
@@ -115,6 +119,7 @@ void AppService::onBinaryMessageReceived(const QByteArray & message)
 
 void AppService::onMessageReceived(const QString & message)
 {
+    qDebug() << "Message received : " << message;
 
     // vars
     Request req;
@@ -146,6 +151,11 @@ void AppService::onMessageReceived(const QString & message)
     case Request::UnRegister:
         unregisterUser(&user, _sender);
         break;
+    default:
+        qDebug() << " ---- UNKNOW REQUEST ----";
+        qDebug() << message;
+        qDebug() << " ----------- END ------------";
+        break;
     }
 }
 
@@ -167,6 +177,8 @@ void AppService::login(User * user, QWebSocket * socket)
     Response res;
     res.addHeader("type", Response::Login);
 
+    qDebug() << "Trying to login User(" << user->username() << ", " << socket << ")";
+
     if(auth->login(user)) {
         auto u = userModel->user(user->username());
         auto id = u.id();
@@ -185,6 +197,8 @@ void AppService::login(User * user, QWebSocket * socket)
 
 void AppService::logout(User *user, QWebSocket *socket)
 {
+    qDebug() << "Trying to logout User(" << user->username() << ", " << socket << ")";
+
     auth->logout(user->id());
 
     // send the logout response
@@ -201,6 +215,8 @@ void AppService::registerUser(User * user, QWebSocket * socket)
 {
     Response res;
     res.addHeader("type", Response::Register);
+
+    qDebug() << "Trying to register User(" << user->username() << ", " << socket << ")";
 
     if(auth->signup(user)) {
 
@@ -222,6 +238,8 @@ void AppService::unregisterUser(User * user, QWebSocket * socket)
     Response res;
     res.addHeader("type", Response::UnRegister);
 
+    qDebug() << "Trying to unregister User(" << user->username() << ", " << socket << ")";
+
     auto b = auth->remove(user);
     if(b) {
         res.addHeader("code", Response::SUCCESS);
@@ -235,4 +253,11 @@ void AppService::unregisterUser(User * user, QWebSocket * socket)
     // remove the connection
     if(b)
         removeConnection(socket);
+}
+
+
+void AppService::onError(QWebSocketProtocol::CloseCode code)
+{
+    qDebug() << code;
+    emit closed(code);
 }

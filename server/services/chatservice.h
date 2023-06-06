@@ -28,9 +28,13 @@ public:
     ~ChatService() {}
 
     static void stop() {
+        qDebug() << "Closing the Service : " << serviceName();
         delete _instance;
     }
 
+    static QString serviceName() {
+        return QString("ChatService");
+    }
 
 public slots:
 

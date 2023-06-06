@@ -21,6 +21,10 @@ public:
 
     static AuthService * instance();
 
+    static QString serviceName() {
+        return QString("AuthService");
+    }
+
     bool login(const User * user);
 
     bool signup(const User * user);
@@ -31,6 +35,7 @@ public:
 
     static void stop()
     {
+        qDebug() << "Closing the Service : " << serviceName();
         delete _instance;
     }
 

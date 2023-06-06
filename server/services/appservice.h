@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QWebSocket>
 #include <QWebSocketServer>
+#include <QWebSocketProtocol>
 
 #include "core/user.h"
 #include "core/models/usermodel.h"
@@ -30,26 +31,34 @@ public:
 
     static AppService * instance();
 
-    static void start(QString host, int port);
+    static void start(int port);
 
-    static void stop(){
+    static void stop()
+    {
+        qDebug() << "Closing the Service : " << serviceName();
         delete _instance;
+    }
+
+    static QString serviceName() {
+        return QString("AppService");
     }
 
     const Connection clients() const { return mClients; }
 
-    QString host() const { return mHost; }
-    void setHost(const QString &host) { mHost = host; }
+//    QString host() const { return mHost; }
+//    void setHost(const QString &host) { mHost = host; }
 
     int port() const;
     void setPort(int newPort);
 
+signals:
+
+    void closed(int code);
+
 private slots:
 
     void onNewConnection();
-
     void onMessageReceived(const QString & message);
-
     void onBinaryMessageReceived(const QByteArray & message);
 
     void onUserAdded(const User * user);
@@ -57,8 +66,10 @@ private slots:
     void onUserLogout(quint64 id);
     void onUserLogin(quint64 id);
 
+    void onError(QWebSocketProtocol::CloseCode code);
+
 private:
-    AppService(QString host, int port, QObject *parent = nullptr);
+    AppService(int port, QObject *parent = nullptr);
     static AppService * _instance;
 
     // private methods
@@ -83,7 +94,7 @@ private:
     // properties
     QWebSocketServer mWebsocketserver;
     Connection mClients;
-    QString mHost;
+    // QString mHost;
     int mPort;
 };
 
