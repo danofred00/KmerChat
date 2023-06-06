@@ -35,7 +35,7 @@ void Response::parse(const QString & s)
         hdrs.insert("code", h["code"].toInt());
 
         // get the content
-        //docContent.setObject(doc["content"].toObject());
+        docContent.setObject(doc["content"].toObject());
 
         // update the header property
         setHeaders(hdrs);
