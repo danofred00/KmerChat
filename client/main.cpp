@@ -1,14 +1,22 @@
 
-#include <QCoreApplication>
-#include "test.h"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-	
-	Test test = Test();
+    QGuiApplication a(argc, argv);
 
-    QObject::connect(&test, &Test::finish, &a, &QCoreApplication::quit);
+    QQmlApplicationEngine engine;
+
+    const QUrl url(u"qrc:/main.qml"_qs);
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, &a, [&]() {
+        qDebug() << "Unable to load Qml File : " << url;
+        QCoreApplication::exit(-1);
+        }, Qt::QueuedConnection);
+
+    engine.load(url);
 
     return a.exec();
 }
