@@ -7,13 +7,18 @@ namespace Core {
 
 class Response : public AbstractNetworkMessage
 {
+    Q_OBJECT
 public:
 
     enum Code {
         SUCCESS = 200, FAILED = 400
     };
 
-    Response(QObject *parent = nullptr);
+    using AbstractNetworkMessage::AbstractNetworkMessage;
+
+    // Response(QObject *parent = nullptr);
+
+    void parse(const QString & response);
 };
 
 } // namespace Core
