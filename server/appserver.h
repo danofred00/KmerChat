@@ -13,19 +13,20 @@ class AppServer : public QObject
 {
     Q_OBJECT
 public:
-    explicit AppServer(QString host, int port, QObject *parent = nullptr);
+    explicit AppServer(int port, QObject *parent = nullptr);
 
     ~AppServer();
 
     void start();
 
+signals:
+    void closed(int code);
+
 private:
 
     void close();
 
-    QString host;
     int port;
-
     UserModel * userModel;
 
 };

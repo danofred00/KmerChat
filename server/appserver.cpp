@@ -14,17 +14,19 @@ using namespace Core;
 using namespace Server;
 using namespace Server::Service;
 
-AppServer::AppServer(QString host, int port, QObject *parent)
-    : host(host), port(port), QObject{parent}
+AppServer::AppServer(int port, QObject *parent)
+    : port(port), QObject{parent}
 {
-    qDebug() << "Starting the server at : " << host << " : " << port;
+    qDebug() << "Starting the server at : " << port;
 }
 
 AppServer::~AppServer()
 {
-    delete userModel;
-
+    qDebug() << "Closing The Server ... ";
     this->close();
+    delete userModel;
+    qDebug() << "Server Closed";
+    emit closed(0);
 }
 
 void AppServer::start()
@@ -38,13 +40,16 @@ void AppServer::start()
 
     ChatService::start();
 
-    AppService::start(host, port);
+    AppService::start(port);
+    QObject::connect(AppService::instance(), &AppService::closed, [&](){
+        emit closed(-1);
+    });
 }
 
 void AppServer::close()
 {
-    DbService::stop();
+    AppService::stop();
     AuthService::stop();
     ChatService::stop();
-    AppService::stop();
+    DbService::stop();
 }

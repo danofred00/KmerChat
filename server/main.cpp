@@ -21,17 +21,19 @@ int main(int argc, char *argv[])
     parser.setApplicationDescription(description());
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("host", QCoreApplication::tr("The host address"));
+    // parser.addPositionalArgument("host", QCoreApplication::tr("The host address"));
     parser.addPositionalArgument("port", QCoreApplication::tr("The port of the server"));
     parser.process(QCoreApplication::arguments());
 
+    bool ok = true;
     auto args = parser.positionalArguments();
+    auto port = args.at(1).toInt(&ok);
 
-    if(args.size() == 2){
+    if((args.size() == 1) && ok){
 
-        Server::AppServer server = Server::AppServer(args.at(0), args.at(1).toInt());
-
-        server.start();
+        Server::AppServer * server = new Server::AppServer(port);
+        QObject::connect(server, SIGNAL(closed(int)), &a, SLOT(quit()), Qt::QueuedConnection);
+        server->start();
 
     } else {
         parser.showHelp();
