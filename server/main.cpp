@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
     QCoreApplication a{argc, argv};
     QCoreApplication::setApplicationName("KmerChat-Server");
     QCoreApplication::setApplicationVersion("0.0.1");
+    QCoreApplication::setOrganizationName("cm.danofred.kmerchat.server");
+    QCoreApplication::setOrganizationDomain("kmerchat.localhost");
 
     QCommandLineParser parser;
     parser.setApplicationDescription(description());
