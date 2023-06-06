@@ -35,36 +35,51 @@ void AuthService::stop()
 }
 
 
-void AuthService::request(int requestType)
+void AuthService::request(Core::User * user, int requestType)
 {
     if(mServerSocket == nullptr)
         throw std::runtime_error("The property serverSocket should'nt be set to null, please update it");
 
     Core::Request req;
     req.addHeader("type", requestType);
-    req.setContent(mUser->toString());
+    req.setContent(user->toString());
 
     // send request
     mServerSocket->sendBinaryMessage(req.toJsonString().toLatin1());
     qDebug() << req.toJsonString();
 }
 
-void AuthService::login()
+void AuthService::setServerSocket(ServerSocket *ss)
 {
-    request(Core::Request::Login);
+    mServerSocket = ss;
+    // do some connection
+    QObject::connect(mServerSocket, SIGNAL(authResponse(Core::Response *)),
+                     this, SLOT(authResponseReceived(Core::Response*)));
 }
 
-void AuthService::signup()
+
+void AuthService::login(Core::User * user)
 {
-    request(Core::Request::Register);
+    request(user, Core::Request::Login);
 }
 
-void AuthService::logout()
+void AuthService::signup(Core::User * user)
 {
-    request(Core::Request::Logout);
+    request(user, Core::Request::Register);
 }
 
-void AuthService::signout()
+void AuthService::logout(Core::User * user)
 {
-    request(Core::Request::UnRegister);
+    request(user, Core::Request::Logout);
+}
+
+void AuthService::signout(Core::User * user)
+{
+    request(user, Core::Request::UnRegister);
+}
+
+void AuthService::authResponseReceived(Core::Response * response)
+{
+    qDebug() << "AuthResponse Received";
+    qDebug() << response->toJsonString();
 }

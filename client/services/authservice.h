@@ -2,6 +2,7 @@
 #define AUTHSERVICE_H
 
 #include "core/user.h"
+#include "core/response.h"
 #include "core/request.h"
 #include "core/services/abstractservice.h"
 
@@ -20,29 +21,33 @@ public:
 
     static AuthService * instance();
 
-    void login();
+    void login(Core::User * user);
 
-    void signup();
+    void signup(Core::User * user);
 
-    void logout();
+    void logout(Core::User * user);
 
-    void signout();
+    void signout(Core::User * user);
 
-    void request(int requestType);
+    void request(Core::User * user, int requestType);
 
-    Core::User * user() const { return mUser; }
+    // Client::ServerSocket * serverSocket() const { return mServerSocket; }
 
-    void setUser(Core::User * user) { mUser = user; }
+    void setServerSocket(Client::ServerSocket * ss);
 
-    Client::ServerSocket * serverSocket() const { return mServerSocket; }
+signals:
 
-    void setServerSocket(Client::ServerSocket * ss) { mServerSocket = ss; }
+    void loginResult(int result);
+
+    void logoutResult(int result);
+
+    void signintResult(int result);
+
+    void signoutResult(int result);
 
 private slots:
 
-    void received(const QByteArray & message) {
-        qDebug() << message;
-    }
+    void authResponseReceived(Core::Response * response);
 
 private:
 
@@ -50,7 +55,6 @@ private:
 
     static AuthService * _instance;
 
-    Core::User * mUser;
     Client::ServerSocket * mServerSocket;
 
 };
