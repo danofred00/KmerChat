@@ -23,6 +23,8 @@ public:
 
     AbstractNetworkMessage(QObject * parent = nullptr);
 
+    AbstractNetworkMessage(const AbstractNetworkMessage & other);
+
     virtual ~AbstractNetworkMessage();
 
     Headers headers() const { return mHeaders; }
@@ -40,6 +42,8 @@ public:
     //setJsonContent(QJsonDocument::fromJson(newContent.toLatin1()));
 
     void addHeader(const QString & h, const int & v);
+
+    AbstractNetworkMessage operator =(const AbstractNetworkMessage & message);
 
 protected:
     QJsonDocument getJsonContent() const { return mJsonContent; }

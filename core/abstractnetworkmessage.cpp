@@ -13,6 +13,18 @@ AbstractNetworkMessage::AbstractNetworkMessage(QObject * parent)
 
 }
 
+AbstractNetworkMessage::AbstractNetworkMessage(const AbstractNetworkMessage &other)
+{
+    setContent(other.content());
+    setHeaders(other.headers());
+}
+
+AbstractNetworkMessage AbstractNetworkMessage::operator=(const AbstractNetworkMessage & message)
+{
+    AbstractNetworkMessage msg {message};
+    return msg;
+}
+
 AbstractNetworkMessage::~AbstractNetworkMessage()
 {
 
