@@ -51,13 +51,28 @@ QString User::toString()
     QJsonDocument json;
     QJsonObject obj;
 
-    obj.insert("id", QJsonValue((qint64) id()));
-    obj.insert("username", QJsonValue(username()));
-    obj.insert("name", QJsonValue(name()));
-    obj.insert("password", QJsonValue(password()));
-    obj.insert("email", QJsonValue(email()));
-    obj.insert("tel", QJsonValue(tel()));
-    obj.insert("image", QJsonValue(image()));
+    auto _id = id();
+    auto _username = username();
+    auto _name = name();
+    auto _password = password();
+    auto _email = email();
+    auto _tel = tel();
+    auto _image = image();
+
+    if(_id != 0)
+        obj.insert("id", QJsonValue((qint64) _id));
+    if(!_username.isEmpty())
+        obj.insert("username", QJsonValue(_username));
+    if(!_name.isEmpty())
+        obj.insert("name", QJsonValue(_name));
+    if(!_password.isEmpty())
+        obj.insert("password", QJsonValue(_password));
+    if(!_email.isEmpty())
+        obj.insert("email", QJsonValue(_email));
+    if(!_tel.isEmpty())
+        obj.insert("tel", QJsonValue(_tel));
+    if(!_image.isEmpty())
+        obj.insert("image", QJsonValue(_image));
 
     json.setObject(obj);
 
