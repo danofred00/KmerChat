@@ -6,16 +6,18 @@ set(CMAKE_AUTOMOC On)
 set(CMAKE_AUTORCC On)
 set(CMAKE_AUTOUIC On)
 
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick Widgets Sql WebSockets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql WebSockets)
 
 # set sources files for the server
 set(SOURCES
-
+    serversocket.cpp
+    services/authservice.cpp
 )
 
 # set headers files for the server
 set(HEADERS
-
+    serversocket.h
+    services/authservice.h
 )
 
 add_executable(${CLIENT_NAME}
@@ -36,7 +38,8 @@ target_link_libraries(${CLIENT_NAME} PRIVATE ${CORE_NAME})
 target_include_directories(${CLIENT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 
 target_link_libraries(${CLIENT_NAME} PRIVATE
-    Qt${QT_VERSION_MAJOR}::Quick
+    # Qt${QT_VERSION_MAJOR}::Quick
+    # Qt${QT_VERSION_MAJOR}::Qml
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::WebSockets
     Qt${QT_VERSION_MAJOR}::Sql

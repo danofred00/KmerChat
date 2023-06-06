@@ -1,22 +1,40 @@
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include <QCoreApplication>
 
 #include <QDebug>
 
+#include "core/user.h"
+#include "serversocket.h"
+#include "services/authservice.h"
+
+using namespace Client;
+using namespace Client::Service;
+
 int main(int argc, char *argv[])
 {
-    QGuiApplication a(argc, argv);
+    QCoreApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
+    auto user = Core::User::Builder()
+        .hasUsername("admin")
+        .hasPassword("password")
+        .build();
 
-    const QUrl url(u"qrc:/main.qml"_qs);
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, &a, [&]() {
-        qDebug() << "Unable to load Qml File : " << url;
-        QCoreApplication::exit(-1);
-        }, Qt::QueuedConnection);
+    ServerSocket socket = ServerSocket();
 
-    engine.load(url);
+    socket.open(QUrl("ws://localhost:1234"));
 
-    return a.exec();
+    QObject::connect(&socket, &ServerSocket::connected, [&]() {
+
+        AuthService::start(&socket);
+
+        AuthService * auth = AuthService::instance();
+
+        auth->setUser(&user);
+
+        auth->login();
+
+    });
+
+
+    return app.exec();
 }
