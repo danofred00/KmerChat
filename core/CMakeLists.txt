@@ -5,6 +5,7 @@ set(SOURCES
     user.cpp
     request.cpp
     response.cpp
+    utils.cpp
     abstractnetworkmessage.cpp
     services/abstractdbservice.cpp
     models/usermodel.cpp
@@ -16,6 +17,7 @@ set(HEADERS
     user.h
     request.h
     response.h
+    utils.h
     abstractnetworkmessage.h
     services/abstractdbservice.h
     services/abstractservice.h

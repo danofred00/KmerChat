@@ -1,4 +1,5 @@
 #include "user.h"
+#include "utils.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -23,7 +24,8 @@ User::User(QMap<QString, QVariant> user, QObject * parent)
     mUsername = user.value("username").toString();
     mEmail = user.value("email").toString();
     mTel = user.value("tel").toString();
-    mPassword = user.value("password").toString();
+    // hash the password
+    mPassword = Utils::hash(user.value("password").toByteArray());
     mImage = user.value("image").toString();
 }
 
