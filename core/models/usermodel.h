@@ -33,6 +33,8 @@ public:
 
     quint64 exists(const quint64 & id);
 
+    User * at(const quint64 & index);
+
     void add(const User & user);
 
     void remove(const quint64 & id);
