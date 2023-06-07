@@ -70,7 +70,7 @@ void AbstractDbService::createTables()
                    "   username VARCHAR(50) UNIQUE,"
                    "   name VARCHAR(50) NOT NULL,"
                    "   email VARCHAR(50) NOT NULL,"
-                   "   password VARCHAR(32) NOT NULL,"
+                   "   password VARCHAR(64) NOT NULL,"
                    "   tel VARCHAR(20),"
                    "   image VARCHAR(255),"
                    "   PRIMARY KEY(id AUTOINCREMENT)"
