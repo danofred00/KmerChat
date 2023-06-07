@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
     bool ok = true;
     auto args = parser.positionalArguments();
-    auto port = args.at(1).toInt(&ok);
+    auto port = args.at(0).toInt(&ok);
 
     if((args.size() == 1) && ok){
 
