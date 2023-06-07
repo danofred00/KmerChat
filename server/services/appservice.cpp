@@ -67,7 +67,7 @@ void AppService::init()
 void AppService::onUserAdded(const User * user)
 {
     // when the user is registering, we add this to the database
-    db->add(user);
+    db->add(*user);
     // we gonna refresh the list
     userModel->setUsers(db->users());
 
