@@ -41,7 +41,7 @@ public:
 
     virtual Message message(quint64 id);
 
-    virtual QList<User> users();
+    virtual QList<User> users(QString filter = QString("username"));
 
     virtual QList<Message> messages();
 

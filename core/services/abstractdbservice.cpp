@@ -139,11 +139,11 @@ Message AbstractDbService::message(quint64 id)
     throw std::runtime_error("Database is closed");
 }
 
-QList<User> AbstractDbService::users()
+QList<User> AbstractDbService::users(QString filter)
 {
     QList<User> users;
 
-    query.exec("SELECT DISTINCT * FROM users WHERE 1 ORDER BY id ASC;");
+    query.exec(QString("SELECT * FROM users WHERE 1 ORDER BY %1 ASC;").arg(filter));
 
     while(query.next())
     {
@@ -233,7 +233,7 @@ void AbstractDbService::add(const User & user)
     query.prepare("INSERT INTO users(username, name, email, password, tel, image)"
                   "  VALUES (:username, :name, :email, :password, :tel, :image);");
     // bind all values
-    query.bindValue(":username", user.username());
+    query.bindValue(":username", user.username().toLower());
     query.bindValue(":name", user.name());
     query.bindValue(":password", user.password());
     query.bindValue(":tel", user.tel());
