@@ -31,7 +31,7 @@ public:
 
     bool remove(const User * user);
 
-    void logout(const quint64 & id);
+    void logout(const User * user);
 
     static void stop()
     {
@@ -56,9 +56,9 @@ public slots:
 */
 signals:
 
-    void userLogin(const quint64 & id);
+    void userLogin(const User * user);
 
-    void userLogout(const quint64 & id);
+    void userLogout(const User * user);
 
     void newUser(const User * user);
 

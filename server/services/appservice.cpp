@@ -22,8 +22,8 @@ AppService::AppService(int port, QObject *parent)
     // connect all signals for differents services
     QObject::connect(auth, SIGNAL(newUser(const User*)), this, SLOT(onUserAdded(const User*)));
     QObject::connect(auth, SIGNAL(removedAccount(const User*)), this, SLOT(onUserRemoved(const User*)));
-    QObject::connect(auth, SIGNAL(userLogin(quint64)), this, SLOT(onUserLogin(quint64)));
-    QObject::connect(auth, SIGNAL(userLogout(quint64)), this, SLOT(onUserLogout(quint64)));
+    QObject::connect(auth, SIGNAL(userLogin(const User*)), this, SLOT(onUserLogin(const User*)));
+    QObject::connect(auth, SIGNAL(userLogout(const User*)), this, SLOT(onUserLogout(const User*)));
 
     //
     userModel = auth->model();
@@ -86,14 +86,14 @@ void AppService::onUserRemoved(const User * user)
     qDebug() << "New Removed account : " << user->name() << " | " << user->email();
 }
 
-void AppService::onUserLogout(quint64 id)
+void AppService::onUserLogout(const User * user)
 {
-    qDebug() << "User Logout : user_id = " << id;
+    qDebug() << "User Logout : user_id = " << user->id();
 }
 
-void AppService::onUserLogin(quint64 id)
+void AppService::onUserLogin(const User * user)
 {
-    qDebug() << "New User Login : user_id = " << id;
+    qDebug() << "New User Login : user_id = " << user->id();
 }
 
 void AppService::removeConnection(QWebSocket * s)
@@ -181,13 +181,16 @@ void AppService::login(User * user, QWebSocket * socket)
 
     if(auth->login(user)) {
 
+        // this approach is not good for me, i will change it later
+        // when the AuthService login the user,
         auto u = userModel->user(user->username());
         auto id = u->id();
-
+        // add the connection
         addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
         res.setContent(u->toString());
+
     } else {
         // update header
         res.addHeader("code", Response::FAILED);
@@ -200,7 +203,7 @@ void AppService::logout(User *user, QWebSocket *socket)
 {
     qDebug() << "Trying to logout User(" << user->username() << ", " << socket << ")";
 
-    auth->logout(user->id());
+    auth->logout(user);
 
     // send the logout response
     Response res;

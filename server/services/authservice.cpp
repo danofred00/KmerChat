@@ -36,7 +36,7 @@ bool AuthService::login(const User * user)
 
     if(_user != nullptr)
         if(_user->password() == user->password()) {
-            emit userLogin(_user->id());
+            emit userLogin(_user);
             return true;
         }
     return false;
@@ -59,8 +59,9 @@ bool AuthService::signup(const User * user)
 bool AuthService::remove(const User * user)
 {
     auto username = user->username();
+    auto index = mUserModel->exists(username);
     // we remove the user only if is valid id and credentials
-    if(mUserModel->exists(username) > 0 && user->password() == mUserModel->user(username)->password()) {
+    if(index > 0 && user->password() == mUserModel->at(index)->password()) {
         mUserModel->remove(username);
         emit removedAccount(user);
         return true;
@@ -69,9 +70,9 @@ bool AuthService::remove(const User * user)
     return false;
 }
 
-void AuthService::logout(const quint64 & id)
+void AuthService::logout(const User * user)
 {
-    emit userLogout(id);
+    emit userLogout(user);
 }
 
 /*

@@ -63,8 +63,8 @@ private slots:
 
     void onUserAdded(const User * user);
     void onUserRemoved(const User * user);
-    void onUserLogout(quint64 id);
-    void onUserLogin(quint64 id);
+    void onUserLogout(const User * user);
+    void onUserLogin(const User * user);
 
     void onError(QWebSocketProtocol::CloseCode code);
 
