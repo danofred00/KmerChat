@@ -32,12 +32,13 @@ AuthService * AuthService::_instance = nullptr;
 
 bool AuthService::login(const User * user)
 {
-    const User _user = mUserModel->user(user->username());
+    const User * _user = mUserModel->user(user->username());
 
-    if(_user.password() == user->password()) {
-        emit userLogin(user->id());
-        return true;
-    }
+    if(_user != nullptr)
+        if(_user->password() == user->password()) {
+            emit userLogin(_user->id());
+            return true;
+        }
     return false;
 }
 
@@ -47,7 +48,7 @@ bool AuthService::signup(const User * user)
         mUserModel->add(*user);
 
         // get userId
-        auto id = mUserModel->users().size() - 1;
+        // auto id = mUserModel->users().size() - 1;
         emit newUser(user);
         return true;
     }
@@ -59,7 +60,7 @@ bool AuthService::remove(const User * user)
 {
     auto username = user->username();
     // we remove the user only if is valid id and credentials
-    if(mUserModel->exists(username) > 0 && user->password() == mUserModel->user(username).password()) {
+    if(mUserModel->exists(username) > 0 && user->password() == mUserModel->user(username)->password()) {
         mUserModel->remove(username);
         emit removedAccount(user);
         return true;
