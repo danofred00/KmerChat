@@ -67,7 +67,7 @@ void AppService::init()
 void AppService::onUserAdded(const User * user)
 {
     // when the user is registering, we add this to the database
-    db->add(*user);
+    db->add(user);
     // we gonna refresh the list
     userModel->setUsers(db->users());
 
@@ -180,13 +180,14 @@ void AppService::login(User * user, QWebSocket * socket)
     qDebug() << "Trying to login User(" << user->username() << ", " << socket << ")";
 
     if(auth->login(user)) {
+
         auto u = userModel->user(user->username());
-        auto id = u.id();
+        auto id = u->id();
 
         addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
-        res.setContent(u.toString());
+        res.setContent(u->toString());
     } else {
         // update header
         res.addHeader("code", Response::FAILED);
@@ -221,11 +222,11 @@ void AppService::registerUser(User * user, QWebSocket * socket)
     if(auth->signup(user)) {
 
         auto u = userModel->user(user->username());
-        auto id = u.id();
+        auto id = u->id();
         addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
-        res.setContent(u.toString());
+        res.setContent(u->toString());
     } else {
         // update header
         res.addHeader("code", Response::FAILED);
