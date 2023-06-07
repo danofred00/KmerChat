@@ -15,19 +15,18 @@ quint64 UserModel::search(const T & criteria, _Func func)
 
     // dico search
     do {
-
         middle = (left+rigth)/2;
         int code = func(&mUsers[middle], criteria);
         if(code == 0) {
             found = true;
             return middle+1;
         } else if(code == -1) {
-            left = middle;
+            left = middle+1;
         } else {
-            rigth = middle;
+            rigth = middle-1;
         }
 
-    } while(!found && (left == rigth));
+    } while(!found && (left != rigth));
 
     return 0;
 }
@@ -46,11 +45,12 @@ int UserModel::searchById(User * user, quint64 id)
 
 int UserModel::searchByUsername(User * user, QString username)
 {
-    auto _username = user->username();
-    if(_username > username)
-        return 1;
-    else if (_username < username)
+    int result = QString::compare(user->username(), username, Qt::CaseInsensitive);
+
+    if(result < 0)
         return -1;
+    else if (result > 0)
+        return 1;
     else
         return 0;
 }
@@ -75,7 +75,6 @@ User * UserModel::user(const QString &username)
 
     return nullptr;
 }
-
 
 quint64 UserModel::exists(const QString & username)
 {
