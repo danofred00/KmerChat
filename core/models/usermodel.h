@@ -19,9 +19,9 @@ public:
 
     void setUsers(QList<User> users) { mUsers = users; }
 
-    User user(quint64 id);
+    User * user(quint64 id);
 
-    User user(const QString &username);
+    User * user(const QString &username);
 
     /**
      * @brief exists
@@ -43,9 +43,26 @@ signals:
 
     void userRemoved(const quint64 & id);
 
-    void userAdded(const User & user);
+    void userAdded(const User * user);
+
+protected:
+
+    /**
+     * @brief search
+     * This function do the dicotomic search into a QList<User>
+     * @param func The criteria, it return -1 if User.T<T, 0 if equal and 1 otherwise
+     * @return the position of element to search or 0 if the element is not found
+     */
+    // std::function<int(const User *, const T &)> & func
+    template<typename T, typename _Func>
+    quint64 search(const T & criteria, _Func func);
 
 private:
+
+    static int searchById(User * user, quint64 id);
+
+    static int searchByUsername(User * user, QString username);
+
     QList<User> mUsers;
 };
 

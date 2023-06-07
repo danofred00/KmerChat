@@ -6,39 +6,85 @@ UserModel::UserModel(QList<User> users, QObject *parent)
     : mUsers{users}, QObject{parent}
 { }
 
-User UserModel::user(quint64 id)
+template<typename T, typename _Func>
+quint64 UserModel::search(const T & criteria, _Func func)
 {
-    for(User & u : mUsers)
-        if(u.id() == id)
-            return u;
+    // vars
+    bool found = false;
+    quint64 middle = 0, left = 0, rigth = mUsers.size()-1;
+
+    // dico search
+    do {
+
+        middle = (left+rigth)/2;
+        int code = func(&mUsers[middle], criteria);
+        if(code == 0) {
+            found = true;
+            return middle+1;
+        } else if(code == -1) {
+            left = middle;
+        } else {
+            rigth = middle;
+        }
+
+    } while(!found && (left == rigth));
+
+    return 0;
+}
+
+int UserModel::searchById(User * user, quint64 id)
+{
+    auto user_id = user->id();
+
+    if(user_id > id)
+        return 1;
+    else if (user_id < id)
+        return -1;
+    else
+        return 0;
+}
+
+int UserModel::searchByUsername(User * user, QString username)
+{
+    auto _username = user->username();
+    if(_username > username)
+        return 1;
+    else if (_username < username)
+        return -1;
+    else
+        return 0;
+}
+
+User * UserModel::user(quint64 id)
+{
+
+    auto res = search<quint64>(id, searchById);
+    if(res != 0)
+        return &mUsers[res-1];
+
     return nullptr;
 }
 
-User UserModel::user(const QString &username)
+User * UserModel::user(const QString &username)
 {
-    for(User & u : mUsers)
-        if(u.username() == username)
-            return u;
+
+    auto res = search<QString>(username, searchByUsername);
+
+    if(res != 0)
+        return &mUsers[res-1];
+
     return nullptr;
 }
 
 
 quint64 UserModel::exists(const QString & username)
 {
-    for(quint64 i=0; i<users().size(); i++)
-        if(users().at(i).username() == username)
-            return i+1;
-
-    return 0;
+    return search<QString>(username, searchByUsername);
 }
 
 quint64 UserModel::exists(const quint64 & id)
 {
-    for(quint64 i=0; i<users().size(); i++)
-        if(users().at(i).id() == id)
-            return i+1;
-
-    return 0;
+    return search<int>(id, searchById);
 }
 
 void UserModel::add(const User & user)
@@ -46,7 +92,7 @@ void UserModel::add(const User & user)
     if(exists(user.username()) == 0)
     {
         mUsers.append(user);
-        emit userAdded(user);
+        emit userAdded(&user);
     }
 }
 
