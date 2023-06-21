@@ -11,27 +11,27 @@ quint64 UserModel::search(const T & criteria, _Func func)
 {
     // vars
     bool found = false;
-    quint64 middle = 0, left = 0, rigth = mUsers.size()-1;
+    quint64 middle, left, rigth;
 
     // dico search
-    do {
+    if(mUsers.size() > 0) {
 
-        middle = (left+rigth)/2;
+        left = 0;
+        rigth = mUsers.size()-1;
 
-        int code = func(&mUsers[middle], criteria);
-
-        if(code == 0) {
-            found = true;
-            return middle+1;
-        } else if(code == -1) {
-            left = middle+1;
-        } else {
-            rigth = middle-1;
+        while(!found && (left <= rigth)) {
+            middle = (left+rigth)/2;
+            int code = func(&mUsers[middle], criteria);
+            if(code == 0) {
+                found = true;
+            } else if(code == -1) {
+                left = middle+1;
+            } else {
+                rigth = middle-1;
+            }
         }
-
-    } while(!found && (left < rigth));
-
-    return 0;
+    }
+    return !found ? 0 : middle+1;
 }
 
 int UserModel::searchById(User * user, quint64 id)
@@ -66,7 +66,6 @@ User * UserModel::user(quint64 id)
 
 User * UserModel::user(const QString &username)
 {
-
     auto index = exists(username);
     return at(index);
 }
@@ -78,9 +77,10 @@ quint64 UserModel::exists(const QString & username)
 
 User * UserModel::at(const quint64 & index)
 {
-    if(index >= mUsers.size() && index < 0)
+    if(index > mUsers.size() || index <= 0)
         return nullptr;
-    return &mUsers[index];
+
+    return &mUsers[index-1];
 }
 
 quint64 UserModel::exists(const quint64 & id)
