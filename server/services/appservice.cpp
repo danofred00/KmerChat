@@ -134,7 +134,8 @@ void AppService::onMessageReceived(const QString & message)
 
     //
 
-    User * user = nullptr;
+    User * user = User::fromJsonString(
+                            req.contentKey("user", QVariant("")).toString());;
     Message * msg = nullptr;
 
     // get the websocket who send the message
@@ -146,22 +147,21 @@ void AppService::onMessageReceived(const QString & message)
     switch (reqType) {
 
     case Request::Login :
-        user = User::fromJsonString(req.content());
         // login the user
         login(user, _sender);
         break;
     case Request::Logout:
-        user = User::fromJsonString(req.content());
+        //user = User::fromJsonString(req.content());
         // logout the user
         logout(user, _sender);
         break;
     case Request::Register :
-        user = User::fromJsonString(req.content());
+        //user = User::fromJsonString(req.content());
         // register the user
         registerUser(user, _sender);
         break;
     case Request::UnRegister:
-        user = User::fromJsonString(req.content());
+        //user = User::fromJsonString(req.content());
         // unregister user
         unregisterUser(user, _sender);
         break;
@@ -207,7 +207,7 @@ void AppService::login(User * user, QWebSocket * socket)
         mClients.addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
-        res.setContent(u->toString());
+        res.setContentKey("user", u->toString());
 
     } else {
         // update header
@@ -248,7 +248,7 @@ void AppService::registerUser(User * user, QWebSocket * socket)
         mClients.addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
-        res.setContent(u->toString());
+        res.setContentKey("user", u->toString());
 
     } else {
         // update header
