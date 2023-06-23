@@ -46,7 +46,6 @@ bool AuthService::signup(const User * user)
 {
     if(mUserModel->exists(user->username()) == 0){
         mUserModel->add(*user);
-
         // get userId
         // auto id = mUserModel->users().size() - 1;
         emit newUser(user);

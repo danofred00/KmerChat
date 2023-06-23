@@ -196,7 +196,7 @@ void AppService::login(User * user, QWebSocket * socket)
         res.addHeader("code", Response::FAILED);
     }
 
-    socket->sendBinaryMessage(res.toJsonString().toLatin1());
+    socket->sendBinaryMessage(res.toString().toLatin1());
 }
 
 void AppService::logout(User *user, QWebSocket *socket)
@@ -209,7 +209,7 @@ void AppService::logout(User *user, QWebSocket *socket)
     Response res;
     res.addHeader("type", Response::Logout);
     res.addHeader("code", Response::SUCCESS);
-    socket->sendBinaryMessage(res.toJsonString().toLatin1());
+    socket->sendBinaryMessage(res.toString().toLatin1());
 
     // remove the connection
     removeConnection(socket);
@@ -226,15 +226,17 @@ void AppService::registerUser(User * user, QWebSocket * socket)
 
         auto u = userModel->user(user->username());
         auto id = u->id();
+
         addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
         res.setContent(u->toString());
+
     } else {
         // update header
         res.addHeader("code", Response::FAILED);
     }
-    socket->sendBinaryMessage(res.toJsonString().toLatin1());
+    socket->sendBinaryMessage(res.toString().toLatin1());
 }
 
 void AppService::unregisterUser(User * user, QWebSocket * socket)
@@ -252,7 +254,7 @@ void AppService::unregisterUser(User * user, QWebSocket * socket)
         res.addHeader("code", Response::FAILED);
     }
 
-    socket->sendBinaryMessage(res.toJsonString().toLatin1());
+    socket->sendBinaryMessage(res.toString().toLatin1());
 
     // remove the connection
     if(b)

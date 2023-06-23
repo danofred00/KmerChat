@@ -35,7 +35,7 @@ void AbstractNetworkMessage::updateJsonContent()
     setJsonContent(QJsonDocument::fromJson(mContent.toLatin1()));
 }
 
-QString AbstractNetworkMessage::toJsonString()
+QString AbstractNetworkMessage::toString()
 {
     QJsonObject json;
     QJsonDocument doc;

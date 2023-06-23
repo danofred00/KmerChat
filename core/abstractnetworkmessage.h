@@ -31,7 +31,7 @@ public:
 
     QString content() const { return mContent; }
 
-    virtual QString toJsonString();
+    virtual QString toString();
 
     virtual void parse(const QString & request);
 

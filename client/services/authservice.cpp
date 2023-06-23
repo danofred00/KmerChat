@@ -46,8 +46,8 @@ void AuthService::request(Core::User * user, int requestType)
     req.setContent(user->toString());
 
     // send request
-    mServerSocket->sendBinaryMessage(req.toJsonString().toLatin1());
-    qDebug() << req.toJsonString();
+    mServerSocket->sendBinaryMessage(req.toString().toLatin1());
+    qDebug() << req.toString();
 }
 
 void AuthService::setServerSocket(ServerSocket *ss)
@@ -81,8 +81,6 @@ void AuthService::signout(Core::User * user)
 
 void AuthService::authResponseReceived(Core::Response * response)
 {
-    qDebug() << "AuthResponse Received : AuthService::class" ;
-
     auto type = response->headers().value("type");
     auto code = response->headers().value("code");
 
