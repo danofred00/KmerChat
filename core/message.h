@@ -18,7 +18,7 @@ public:
 
     Message(const Message & other);
 
-    Message(MessageType type = TEXT, QString content = QString(""), MessageState state = MessageState::NOTSEND, QObject * parent = nullptr);
+    Message(QString content = QString(""), MessageType type = TEXT, MessageState state = MessageState::NOTSEND, QObject * parent = nullptr);
 
     // getters
     const QString content() const { return mContent; }
@@ -49,7 +49,7 @@ public:
 
     // utils
 
-    static Message fromJsonString(const QString & json);
+    static Message * fromJsonString(const QString & json);
 
     QString toString();
 

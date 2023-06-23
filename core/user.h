@@ -94,7 +94,7 @@ public:
 
 
     // statics mthods
-    static User fromJsonString(const QString json);
+    static User * fromJsonString(const QString json);
 
     QString toString();
 

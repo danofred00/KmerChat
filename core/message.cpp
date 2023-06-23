@@ -15,8 +15,8 @@ using namespace Core;
  * @param parent
  */
 
-Message::Message(MessageType type,
-                 QString content,
+Message::Message(QString content,
+                 MessageType type,
                  MessageState state,
                  QObject *parent) :
     mType(type), mContent(content), mState(state), QObject(parent)
@@ -66,9 +66,9 @@ QString Message::toString()
  * @param json
  * @return
  *///////////
-Message Message::fromJsonString(const QString &json)
+Message * Message::fromJsonString(const QString &json)
 {
-    Message msg;
+    Message * msg = new Message;
     QJsonDocument jsonDoc;
     QJsonParseError * error = nullptr;
 
@@ -78,12 +78,12 @@ Message Message::fromJsonString(const QString &json)
     if(error != nullptr)
         throw std::runtime_error("Error while parsing the Json String");
     // else
-    msg.setType(Message::strToMessageType(jsonDoc["type"].toString()));
-    msg.setState(Message::strToMessageState(jsonDoc["state"].toString()));
-    msg.setUserFrom(jsonDoc["from"].toInteger());
-    msg.setUserTo(jsonDoc["to"].toInteger());
-    msg.setId(jsonDoc["id"].toInteger());
-    msg.setContent(jsonDoc["content"].toString());
+    msg->setType(Message::strToMessageType(jsonDoc["type"].toString()));
+    msg->setState(Message::strToMessageState(jsonDoc["state"].toString()));
+    msg->setUserFrom(jsonDoc["from"].toInteger());
+    msg->setUserTo(jsonDoc["to"].toInteger());
+    msg->setId(jsonDoc["id"].toInteger());
+    msg->setContent(jsonDoc["content"].toString());
     //
     return msg;
 }

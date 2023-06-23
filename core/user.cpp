@@ -40,9 +40,9 @@ User::User(const User & other)
     setImage(other.image());
 }
 
-User User::fromJsonString(const QString json)
+User * User::fromJsonString(const QString json)
 {
-    User user;
+    User * user = new User;
     QJsonParseError * error = nullptr;
     auto jsonDoc = QJsonDocument::fromJson(json.toLatin1(), error);
 
@@ -50,13 +50,13 @@ User User::fromJsonString(const QString json)
         throw std::runtime_error(error->errorString().toStdString());
 
     // if there's no error
-    user.setName(jsonDoc["name"].toString());
-    user.setId(jsonDoc["id"].toInteger());
-    user.setUsername(jsonDoc["username"].toString());
-    user.setEmail(jsonDoc["email"].toString());
-    user.setTel(jsonDoc["tel"].toString());
-    user.setPassword(jsonDoc["password"].toString());
-    user.setImage(jsonDoc["image"].toString());
+    user->setName(jsonDoc["name"].toString());
+    user->setId(jsonDoc["id"].toInteger());
+    user->setUsername(jsonDoc["username"].toString());
+    user->setEmail(jsonDoc["email"].toString());
+    user->setTel(jsonDoc["tel"].toString());
+    user->setPassword(jsonDoc["password"].toString());
+    user->setImage(jsonDoc["image"].toString());
 
     return user;
 }
