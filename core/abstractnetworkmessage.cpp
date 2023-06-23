@@ -10,7 +10,7 @@ using namespace Core;
 AbstractNetworkMessage::AbstractNetworkMessage(QObject * parent)
     : QObject(parent)
 {
-
+    mJsonContent.setObject(QJsonObject());
 }
 
 AbstractNetworkMessage::AbstractNetworkMessage(const AbstractNetworkMessage &other)
@@ -32,6 +32,9 @@ AbstractNetworkMessage::~AbstractNetworkMessage()
 
 void AbstractNetworkMessage::updateJsonContent()
 {
+    if(mContent.isEmpty())
+        return;
+
     setJsonContent(QJsonDocument::fromJson(mContent.toLatin1()));
 }
 
@@ -82,11 +85,10 @@ void AbstractNetworkMessage::parse(const QString & s)
 
         // get the content
         docContent.setObject(doc["content"].toObject());
-
         // update the header property
         setHeaders(hdrs);
         setContent(QString(docContent.toJson(QJsonDocument::Compact)));
-
+        setJsonContent(docContent);
     } else {
         // if there's some error
         qDebug() << "Error while parsing the JsonString : " << error.errorString();
@@ -100,4 +102,25 @@ void AbstractNetworkMessage::addHeader(const QString & h, const int & v)
         return;
 
     mHeaders.insert(h, v);
+}
+
+void AbstractNetworkMessage::setContentKey(const QString &key, const QString &content)
+{
+    auto _key = key.toLatin1();
+    if(mJsonContent.object().contains(_key))
+        return;
+    auto obj = mJsonContent.object();
+    obj.insert(_key, QJsonValue(content));
+    mJsonContent.setObject(obj);
+    qDebug() << mJsonContent[_key];
+}
+
+QVariant AbstractNetworkMessage::contentKey(const QString &key, const QVariant &defaultValue)
+{
+    auto _key = key.toLatin1();
+    if(!mJsonContent.object().contains(_key))
+        return defaultValue;
+
+    return QVariant(QJsonDocument(mJsonContent[_key].toObject()).toJson(QJsonDocument::Compact));
+
 }

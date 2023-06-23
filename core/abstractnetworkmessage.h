@@ -43,6 +43,10 @@ public:
 
     void addHeader(const QString & h, const int & v);
 
+    void setContentKey(const QString & key, const QString & content);
+
+    QVariant contentKey(const QString & key, const QVariant & defaultValue = QVariant());
+
     AbstractNetworkMessage operator =(const AbstractNetworkMessage & message);
 
 protected:
