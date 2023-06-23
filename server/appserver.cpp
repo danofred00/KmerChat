@@ -44,6 +44,7 @@ void AppServer::start()
     QObject::connect(AppService::instance(), &AppService::closed, [&](){
         emit closed(-1);
     });
+
 }
 
 void AppServer::close()

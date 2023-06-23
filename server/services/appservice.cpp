@@ -1,7 +1,7 @@
 
 #include "appservice.h"
-#include "core/request.h"
 #include "core/response.h"
+#include "core/request.h"
 #include <exception>
 
 using namespace Server::Service ;
@@ -50,6 +50,19 @@ void AppService::start(int port)
     }
 }
 
+bool AppService::sendToClient(const QString & msg, const quint64 id)
+{
+    // send message msg to all online clients
+    bool sended = false;
+    if(mClients.contains(id)) {
+        for(auto client : mClients[id])
+            client->sendTextMessage(msg);
+        sended = true;
+    }
+
+    return sended;
+}
+
 void AppService::init()
 {
     // run the server
@@ -96,13 +109,6 @@ void AppService::onUserLogin(const User * user)
     qDebug() << "New User Login : user_id = " << user->id();
 }
 
-void AppService::removeConnection(QWebSocket * s)
-{
-    if(mClients.remove(s)) {
-        s->deleteLater();
-    }
-}
-
 void AppService::onNewConnection()
 {
     QWebSocket * socket = mWebsocketserver.nextPendingConnection();
@@ -126,30 +132,44 @@ void AppService::onMessageReceived(const QString & message)
     req.parse(message);
     int reqType = req.headers().value("type");
 
+    //
+
+    User * user = nullptr;
+    Message * msg = nullptr;
+
     // get the websocket who send the message
     auto _sender = static_cast<QWebSocket *>(sender());
 
     //qDebug() << _sender->localAddress() << " - " << _sender->localPort();
 
-    User user = User::fromJsonString(req.content());
-
     // some action
     switch (reqType) {
 
     case Request::Login :
+        user = User::fromJsonString(req.content());
         // login the user
-        login(&user, _sender);
+        login(user, _sender);
         break;
     case Request::Logout:
+        user = User::fromJsonString(req.content());
         // logout the user
-        logout(&user, _sender);
+        logout(user, _sender);
         break;
     case Request::Register :
+        user = User::fromJsonString(req.content());
         // register the user
-        registerUser(&user, _sender);
+        registerUser(user, _sender);
         break;
     case Request::UnRegister:
-        unregisterUser(&user, _sender);
+        user = User::fromJsonString(req.content());
+        // unregister user
+        unregisterUser(user, _sender);
+        break;
+    case Request::Simple:
+        // the the request is a simple message, we just
+        // parse the content as a message, and send it to chat service
+        msg = Message::fromJsonString(req.contentKey("message").toString());
+        emit chat->messageReceive(msg);
         break;
     default:
         qDebug() << " ---- UNKNOW REQUEST ----";
@@ -157,15 +177,13 @@ void AppService::onMessageReceived(const QString & message)
         qDebug() << " ----------- END ------------";
         break;
     }
+
+    // free the memory allocated by
+    // deleting all pointers
+    if (user != nullptr) delete user;
+    if (msg != nullptr) delete msg;
 }
 
-void AppService::addConnection(QWebSocket * s, quint64 id)
-{
-    if(mClients.contains(s))
-        return;
-
-    mClients.insert(s, id);
-}
 //void AppService::authClient(QWebSocket * socket)
 //{
 //    qDebug() << socket->request().url();
@@ -186,7 +204,7 @@ void AppService::login(User * user, QWebSocket * socket)
         auto u = userModel->user(user->username());
         auto id = u->id();
         // add the connection
-        addConnection(socket, id);
+        mClients.addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
         res.setContent(u->toString());
@@ -212,7 +230,7 @@ void AppService::logout(User *user, QWebSocket *socket)
     socket->sendBinaryMessage(res.toString().toLatin1());
 
     // remove the connection
-    removeConnection(socket);
+    mClients.removeConnection(socket, user->id());
 }
 
 void AppService::registerUser(User * user, QWebSocket * socket)
@@ -227,7 +245,7 @@ void AppService::registerUser(User * user, QWebSocket * socket)
         auto u = userModel->user(user->username());
         auto id = u->id();
 
-        addConnection(socket, id);
+        mClients.addConnection(socket, id);
         // update header
         res.addHeader("code", Response::SUCCESS);
         res.setContent(u->toString());
@@ -258,7 +276,7 @@ void AppService::unregisterUser(User * user, QWebSocket * socket)
 
     // remove the connection
     if(b)
-        removeConnection(socket);
+        mClients.removeConnection(socket, user->id());
 }
 
 

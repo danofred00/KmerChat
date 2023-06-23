@@ -14,6 +14,8 @@
 #include "dbservice.h"
 #include "chatservice.h"
 
+#include "../models/connectionmodel.h"
+
 #define DEFAULT_SERVERNAME "KmerchatServer"
 
 namespace Server::Service  {
@@ -21,8 +23,7 @@ namespace Server::Service  {
 using namespace Core;
 using namespace Core::Model;
 using namespace Core::Service;
-
-using Connection = QMap<QWebSocket *, quint64>;
+using namespace Server::Model;
 
 class AppService : public AbstractService
 {
@@ -43,13 +44,15 @@ public:
         return QString("AppService");
     }
 
-    const Connection clients() const { return mClients; }
+    // const ConnectionModel clients() const { return mClients; }
 
 //    QString host() const { return mHost; }
 //    void setHost(const QString &host) { mHost = host; }
 
     int port() const;
     void setPort(int newPort);
+
+    bool sendToClient(const QString & msg, const quint64 id);
 
 signals:
 
@@ -74,8 +77,6 @@ private:
 
     // private methods
     void init();
-    void removeConnection(QWebSocket * s);
-    void addConnection(QWebSocket * s, quint64 id = 0);
 
     void login(User * user, QWebSocket * socket);
     void registerUser(User * user, QWebSocket * socket);
@@ -93,7 +94,7 @@ private:
 
     // properties
     QWebSocketServer mWebsocketserver;
-    Connection mClients;
+    ConnectionModel mClients;
     // QString mHost;
     int mPort;
 };

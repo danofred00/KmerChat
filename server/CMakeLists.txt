@@ -6,6 +6,7 @@ set(SOURCES
     services/dbservice.cpp
     services/authservice.cpp
     services/appservice.cpp
+    models/connectionmodel.cpp
 )
 
 # set headers files for the server
@@ -15,6 +16,7 @@ set(HEADERS
     services/dbservice.h
     services/authservice.h
     services/appservice.h
+    models/connectionmodel.h
 )
 
 add_executable(${SERVER_NAME}
