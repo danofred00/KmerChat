@@ -100,7 +100,6 @@ private:
 
     QSqlDatabase db;
     QSqlQuery query;
-
 };
 
 } // namespace Core::Service
