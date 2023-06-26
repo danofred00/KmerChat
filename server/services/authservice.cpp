@@ -42,7 +42,7 @@ bool AuthService::login(const User * user)
     return false;
 }
 
-bool AuthService::signup(const User * user)
+bool AuthService::signup(User * user)
 {
     if(mUserModel->exists(user->username()) == 0){
         mUserModel->add(*user);

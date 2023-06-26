@@ -35,7 +35,7 @@ public:
 
     User * at(const quint64 & index);
 
-    void add(const User & user);
+    quint64 add(User & user);
 
     void remove(const quint64 & id);
 
@@ -45,7 +45,7 @@ signals:
 
     void userRemoved(const quint64 & id);
 
-    void userAdded(const User * user);
+    void userAdded(User * user);
 
 protected:
 

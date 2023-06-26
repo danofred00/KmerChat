@@ -27,7 +27,7 @@ public:
 
     bool login(const User * user);
 
-    bool signup(const User * user);
+    bool signup(User * user);
 
     bool remove(const User * user);
 

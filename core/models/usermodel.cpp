@@ -88,13 +88,15 @@ quint64 UserModel::exists(const quint64 & id)
     return search<quint64>(id, searchById);
 }
 
-void UserModel::add(const User & user)
+quint64 UserModel::add(User & user)
 {
     if(exists(user.username()) == 0)
     {
         mUsers.append(user);
         emit userAdded(&user);
+        return mUsers.size();
     }
+    return 0;
 }
 
 void UserModel::remove(const quint64 & id)

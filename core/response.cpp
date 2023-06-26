@@ -40,6 +40,7 @@ void Response::parse(const QString & s)
         // update the header property
         setHeaders(hdrs);
         setContent(QString(docContent.toJson(QJsonDocument::Compact)));
+        setJsonContent(docContent);
 
     } else {
         // if there's some error

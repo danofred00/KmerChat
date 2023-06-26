@@ -110,9 +110,9 @@ void AbstractNetworkMessage::setContentKey(const QString &key, const QString &co
     if(mJsonContent.object().contains(_key))
         return;
     auto obj = mJsonContent.object();
-    obj.insert(_key, QJsonValue(content));
+    obj.insert(_key, QJsonDocument::fromJson(content.toLatin1()).object());
     mJsonContent.setObject(obj);
-    qDebug() << mJsonContent[_key];
+    //qDebug() << mJsonContent[_key];
 }
 
 QVariant AbstractNetworkMessage::contentKey(const QString &key, const QVariant &defaultValue)

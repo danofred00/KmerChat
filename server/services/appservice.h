@@ -52,7 +52,7 @@ public:
     int port() const;
     void setPort(int newPort);
 
-    bool sendToClient(const QString & msg, const quint64 id);
+    bool sendToClient(const QString & msg, const quint64 &sender, const quint64 &id, const int type = 0);
 
 signals:
 

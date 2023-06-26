@@ -16,6 +16,8 @@ class ServerSocket : public QWebSocket
 public:
     ServerSocket(QObject *parent = nullptr);
 
+    ~ServerSocket();
+
     Core::Response * lastResponse();
 
 signals:
@@ -32,7 +34,7 @@ public slots:
 
 private:
 
-    Core::Response response;
+    Core::Response * response;
 };
 
 } // namespace Client

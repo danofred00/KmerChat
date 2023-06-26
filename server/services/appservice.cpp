@@ -50,13 +50,23 @@ void AppService::start(int port)
     }
 }
 
-bool AppService::sendToClient(const QString & msg, const quint64 id)
+bool AppService::sendToClient(const QString & msg, const quint64 & sender, const quint64 &id, const int type)
 {
+    Request req;
+    req.setContentKey("message", msg);
+    req.addHeader("type", type);
+
+    // get info about sender
+    auto _sender = userModel->user(sender);
+    // remove sensible infos
+    _sender->setPassword("");
+    req.setContentKey("user", _sender->toString());
+
     // send message msg to all online clients
     bool sended = false;
     if(mClients.contains(id)) {
         for(auto client : mClients[id])
-            client->sendTextMessage(msg);
+            client->sendTextMessage(req.toString());
         sended = true;
     }
 
