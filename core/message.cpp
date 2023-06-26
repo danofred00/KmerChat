@@ -21,9 +21,9 @@ Message::Message(QString content,
                  QObject *parent) :
     mType(type), mContent(content), mState(state), QObject(parent)
 {
-    setUserFrom(0);
+    setChatId(0);
     setId(0);
-    setUserTo(0);
+    setUserId(0);
 }
 
 /**
@@ -35,8 +35,8 @@ Message::Message(const Message & other)
     setContent(other.content());
     setState(other.state());
     setType(other.type());
-    setUserFrom(other.from());
-    setUserTo(other.to());
+    setChatId(other.chatId());
+    setUserId(other.userId());
     setId(other.id());
 }
 
@@ -51,8 +51,8 @@ QString Message::toString()
     //
     obj.insert(QStringLiteral("type"), QJsonValue(msgTypeToStr(type())));
     obj.insert(QStringLiteral("state"), QJsonValue(msgStateToStr(state())));
-    obj.insert(QStringLiteral("from"), QJsonValue((qint64) from()));
-    obj.insert(QStringLiteral("to"), QJsonValue((qint64) to()));
+    obj.insert(QStringLiteral("chat_id"), QJsonValue((qint64) chatId()));
+    obj.insert(QStringLiteral("user_id"), QJsonValue((qint64) userId()));
     obj.insert(QStringLiteral("content"), QJsonValue(content()));
     obj.insert(QStringLiteral("id"), QJsonValue((qint64) id()));
 
@@ -80,8 +80,8 @@ Message * Message::fromJsonString(const QString &json)
     // else
     msg->setType(Message::strToMessageType(jsonDoc["type"].toString()));
     msg->setState(Message::strToMessageState(jsonDoc["state"].toString()));
-    msg->setUserFrom(jsonDoc["from"].toInteger());
-    msg->setUserTo(jsonDoc["to"].toInteger());
+    msg->setChatId(jsonDoc["chat_id"].toInteger());
+    msg->setUserId(jsonDoc["user_id"].toInteger());
     msg->setId(jsonDoc["id"].toInteger());
     msg->setContent(jsonDoc["content"].toString());
     //

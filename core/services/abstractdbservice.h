@@ -3,17 +3,20 @@
 
 #include "abstractservice.h"
 
-#include "../user.h"
-#include "../message.h"
+#define DEFAULT_DB_TYPE "QSQLITE"
+#define DEFAULT_CONNECTION_NAME "KmerChat"
+#define DEFAULT_DB_NAME "kmerchat.db"
 
 #include <QList>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlRecord>
 
-#define DEFAULT_DB_TYPE "QSQLITE"
-#define DEFAULT_CONNECTION_NAME "KmerChat"
-#define DEFAULT_DB_NAME "kmerchat.db"
+namespace Core {
+class User;
+class Message;
+class Chat;
+}
 
 namespace Core::Service {
 
@@ -41,23 +44,37 @@ public:
 
     virtual Message message(quint64 id);
 
+    virtual Chat chat(quint64 id);
+
     virtual QList<User> users(QString filter = QString("username"));
 
     virtual QList<Message> messages();
+
+    virtual QList<Chat> chats(QString filter = QString("id"));
 
     virtual void add(const User & user);
 
     virtual void add(const Message & message);
 
+    virtual void add(const Chat & chat);
+
+    virtual void addToChat(const Chat & chat, const quint64 &user_id);
+
+    virtual void removeToChat(const Chat & chat, const quint64 &user_id);
+
     virtual void update(const User & user);
 
     virtual void update(const Message & message);
+
+    virtual void update(const Chat & chat);
 
     virtual bool deleteUser(const quint64 id);
 
     virtual bool deleteUser(const QString & username);
 
     virtual bool deleteMessage(const quint64 id);
+
+    virtual bool deleteChat(const quint64 & id);
 
     // getters
     const QString host() const { return mHost; }
@@ -81,14 +98,18 @@ public:
 
     void setDbname(const QString &name) { mDbname = name; }
 
+    // create tables
+    virtual void createUsersTable();
+    virtual void createMessagesTable();
+    virtual void createChatsTables();
 
 protected:
 
     void createTables();
 
     User recordToUser(const QSqlRecord & record);
-
     Message recordToMessage(const QSqlRecord & record);
+    Chat recordToChat(const QSqlRecord & record);
 
 private:
     // properties

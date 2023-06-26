@@ -23,9 +23,9 @@ public:
     // getters
     const QString content() const { return mContent; }
 
-    const quint64 from() const { return mUserFrom; }
+    const quint64 chatId() const { return mChatId; }
 
-    const quint64 to() const { return mUserTo; }
+    const quint64 userId() const { return mUserId; }
 
     const quint64 id() const { return mId;}
 
@@ -41,9 +41,9 @@ public:
 
     void setType(MessageType type) { mType = type; }
 
-    void setUserFrom(const quint64 id) { mUserFrom = id; }
+    void setChatId(const quint64 id) { mChatId = id; }
 
-    void setUserTo(const quint64 id) { mUserTo = id; }
+    void setUserId(const quint64 id) { mUserId = id; }
 
     void setId(const quint64 id) { mId = id; }
 
@@ -70,8 +70,8 @@ public:
 private:
 
     QString mContent;
-    quint64 mUserFrom;
-    quint64 mUserTo;
+    quint64 mChatId;
+    quint64 mUserId;
     quint64 mId;
     MessageState mState;
     MessageType mType;

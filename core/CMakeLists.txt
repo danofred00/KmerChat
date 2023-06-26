@@ -3,6 +3,7 @@
 set(SOURCES
     message.cpp
     user.cpp
+    chat.cpp
     request.cpp
     response.cpp
     utils.cpp
@@ -15,6 +16,7 @@ set(SOURCES
 set(HEADERS
     message.h
     user.h
+    chat.h
     request.h
     response.h
     utils.h
