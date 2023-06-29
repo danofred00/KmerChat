@@ -24,10 +24,12 @@ public:
     static DbService * instance();
 
     static void start(
-            const QString & host = QString("localhost"),
-            const int port = 8080,
-            const QString & username = QString("admin"),
-            const QString & password = QString("password"));
+            const QString & host,
+            const int port,
+            const QString & username,
+            const QString & password,
+            const QString & dbName,
+            const QString & driver);
 
     static void stop()
     {
@@ -39,9 +41,22 @@ public:
         return QString("DbService");
     }
 
+protected:
+
+    void createChatsTables() ;
+    void createMessagesTable() ;
+    void createUsersTable();
+
 private:
 
-    using AbstractDbService::AbstractDbService;
+    DbService(
+        const QString & host,
+        const int port,
+        const QString & username,
+        const QString & password,
+        const QString & dbname,
+        const QString & type,
+        QObject * parent = nullptr);
 
     static DbService * _instance;
 

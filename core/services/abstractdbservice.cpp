@@ -14,43 +14,25 @@ AbstractDbService::AbstractDbService(
     const int port,
     const QString & username,
     const QString & password,
+    const QString &dbname,
+    const QString & type,
     QObject * parent)
     :   mHost(host),
         mPort(port),
         mUsername(username),
         mPassword(password),
+        mDbType(type),
         AbstractService(parent)
 {
     // debug
-    qDebug() << "Starting Database Service ...";
-
-    // init the database
-    db = QSqlDatabase::addDatabase(DEFAULT_DB_TYPE, DEFAULT_CONNECTION_NAME);
-
-    // open the database
-    db.setDatabaseName(DEFAULT_DB_NAME);
-    db.setUserName(username);
-    db.setHostName(host);
-    db.setPassword(password);
-    db.setPort(port);
-
-    if(db.open()) {
-        // init query
-        query = QSqlQuery(db);
-        // create tables
-        createTables();
-        // update the instance var
-        // _instance = this;
-    } else {
-        qDebug() << db.lastError().text();
-    }
+    qDebug() << "Starting AbstractDatabase Service ...";
 }
 
 AbstractDbService::AbstractDbService(const AbstractDbService &other)
 {
     db = other.db;
     setUsername(other.username());
-    setDbname(other.dbname());
+    setDbName(other.dbName());
     setHost(other.host());
     setPassword(other.password());
     setPort(other.port());
@@ -70,6 +52,31 @@ void AbstractDbService::createTables()
         createUsersTable();
         createChatsTables();
         createMessagesTable();
+    }
+}
+
+void AbstractDbService::init()
+{
+    // init the database
+    db = QSqlDatabase::addDatabase(mDbType, DEFAULT_CONNECTION_NAME);
+
+    // open the database
+    auto n = mDbName.isEmpty() ? DEFAULT_DB_NAME : mDbName;
+    db.setDatabaseName(n);
+    db.setUserName(mUsername);
+    db.setHostName(mHost);
+    db.setPassword(mPassword);
+    db.setPort(mPort);
+
+    if(db.open()) {
+        // init query
+        query = QSqlQuery(db);
+        // create tables
+        createTables();
+        // update the instance var
+        // _instance = this;
+    } else {
+        qDebug() << db.lastError().text();
     }
 }
 
@@ -146,11 +153,15 @@ Chat AbstractDbService::chat(quint64 id)
     throw std::runtime_error("Database is closed");
 }
 
-QList<User> AbstractDbService::users(QString filter)
+QList<User> AbstractDbService::users(QString orderBy, bool useFilter, QString filter)
 {
     QList<User> users;
 
-    query.exec(QString("SELECT * FROM users WHERE 1 ORDER BY %1 ASC;").arg(filter));
+    QString q = "SELECT * FROM users WHERE ";
+    q += (useFilter) ? "1"
+                     : QString("name LIKE '%%1%' OR username LIKE '%%2%'").arg(filter, filter);
+    q += QString(" ORDER BY %1 ASC;").arg(orderBy);
+    query.exec(q);
 
     while(query.next())
     {

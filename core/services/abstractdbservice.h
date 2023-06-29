@@ -5,7 +5,7 @@
 
 #define DEFAULT_DB_TYPE "QSQLITE"
 #define DEFAULT_CONNECTION_NAME "KmerChat"
-#define DEFAULT_DB_NAME "kmerchat.db"
+#define DEFAULT_DB_NAME "kmerchat"
 
 #include <QList>
 #include <QSqlDatabase>
@@ -32,6 +32,8 @@ public:
         const int port,
         const QString & username,
         const QString & password,
+        const QString & dbname = QString(),
+        const QString & type = QString(DEFAULT_DB_TYPE),
         QObject * parent = nullptr);
 
     AbstractDbService(const AbstractDbService &other);
@@ -46,7 +48,7 @@ public:
 
     virtual Chat chat(quint64 id);
 
-    virtual QList<User> users(QString filter = QString("username"));
+    virtual QList<User> users(QString orderBy = QString("username"), bool useFilter = false, QString filter = QString());
 
     virtual QList<Message> messages();
 
@@ -79,13 +81,17 @@ public:
     // getters
     const QString host() const { return mHost; }
 
-    const QString dbname() const { return mDbname; }
+    const QString dbName() const { return mDbName; }
 
     const int port() const { return mPort; }
 
     const QString username() const { return mUsername; }
 
     const QString password() const { return mPassword; }
+
+    const QString driverType() const { return mDbType; }
+
+    QSqlDatabase database() const { return db; }
 
     // setters
     void setHost(const QString & host) { mHost = host; }
@@ -96,20 +102,24 @@ public:
 
     void setPassword(const QString & password) { mPassword = password; }
 
-    void setDbname(const QString &name) { mDbname = name; }
+    void setDbName(const QString &name) { mDbName = name; }
 
+protected:
     // create tables
     virtual void createUsersTable();
     virtual void createMessagesTable();
     virtual void createChatsTables();
 
-protected:
-
     void createTables();
+
+    virtual void init();
 
     User recordToUser(const QSqlRecord & record);
     Message recordToMessage(const QSqlRecord & record);
     Chat recordToChat(const QSqlRecord & record);
+
+    QSqlDatabase db;
+    QSqlQuery query;
 
 private:
     // properties
@@ -117,10 +127,9 @@ private:
     int mPort;
     QString mUsername;
     QString mPassword;
-    QString mDbname;
+    QString mDbName;
+    QString mDbType;
 
-    QSqlDatabase db;
-    QSqlQuery query;
 };
 
 } // namespace Core::Service
