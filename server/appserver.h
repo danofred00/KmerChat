@@ -7,13 +7,14 @@
 
 namespace Server {
 
+class ConfigLoader;
 using namespace Core::Model;
 
 class AppServer : public QObject
 {
     Q_OBJECT
 public:
-    explicit AppServer(int port, QObject *parent = nullptr);
+    explicit AppServer(ConfigLoader * configLoader, QObject *parent = nullptr);
 
     ~AppServer();
 
@@ -26,8 +27,9 @@ private:
 
     void close();
 
-    int port;
+    ConfigLoader * configLoader;
     UserModel * userModel;
+
 
 };
 
